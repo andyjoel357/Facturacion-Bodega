@@ -1,13 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package vista;
 
-import InternalView.Factura;
 import InternalView.VerInventario;
 import java.awt.Dimension;
 import javax.swing.JDesktopPane;
+import javax.swing.JFrame;
 
 /**
  *
@@ -19,11 +15,12 @@ public class Menu extends javax.swing.JFrame {
 
     public Menu() {
         initComponents();
-        this.setSize(new Dimension(1200, 700));
-        this.setExtendedState(this.MAXIMIZED_BOTH);
+       this.setSize(new Dimension(982, 515));
         this.setLocationRelativeTo(null);
         this.setLayout(null);
-
+        this.setTitle("Menu Principal");
+        this.setResizable(false);
+        
         jDesktopPane_menu = new JDesktopPane();
 
         Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
@@ -44,80 +41,131 @@ public class Menu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
-        jMenu3 = new javax.swing.JMenu();
-        jMenuItem5 = new javax.swing.JMenuItem();
-        jMenuItem6 = new javax.swing.JMenuItem();
+        background = new javax.swing.JPanel();
+        Nombre = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        inventario = new javax.swing.JButton();
+        facturacion = new javax.swing.JButton();
+        cierre = new javax.swing.JButton();
+        balance = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        jMenuBar1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jMenuBar1.setFont(new java.awt.Font("Segoe UI Symbol", 1, 24)); // NOI18N
+        background.setBackground(new java.awt.Color(255, 255, 255));
+        background.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jMenu1.setText("Inventario");
-        jMenu1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenu1MouseClicked(evt);
-            }
-        });
-        jMenuBar1.add(jMenu1);
+        Nombre.setFont(new java.awt.Font("Roboto", 1, 24)); // NOI18N
+        Nombre.setForeground(new java.awt.Color(255, 255, 255));
+        Nombre.setText("Nombre Bodega");
+        background.add(Nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 280, -1, -1));
 
-        jMenu2.setText("Facturacion / notas de venta");
-        jMenu2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenu2MouseClicked(evt);
-            }
-        });
-        jMenu2.addActionListener(new java.awt.event.ActionListener() {
+        jLabel2.setFont(new java.awt.Font("Roboto", 1, 36)); // NOI18N
+        jLabel2.setText("Sistema de ventas e inventario");
+        background.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 60, 500, 30));
+
+        jPanel1.setBackground(new java.awt.Color(204, 255, 255));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Menu Principal", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Roboto", 1, 12))); // NOI18N
+
+        inventario.setBackground(new java.awt.Color(102, 102, 255));
+        inventario.setFont(new java.awt.Font("Roboto Black", 0, 18)); // NOI18N
+        inventario.setForeground(new java.awt.Color(255, 255, 255));
+        inventario.setIcon(new javax.swing.ImageIcon(System.getProperty("user.dir")+"\\src\\main\\java\\images\\inventario.png"));
+        inventario.setText("Ver Inventario");
+        inventario.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        inventario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenu2ActionPerformed(evt);
+                inventarioActionPerformed(evt);
             }
         });
-        jMenuBar1.add(jMenu2);
 
-        jMenu3.setText("Otros");
+        facturacion.setBackground(new java.awt.Color(153, 255, 102));
+        facturacion.setFont(new java.awt.Font("Roboto Black", 0, 18)); // NOI18N
+        facturacion.setForeground(new java.awt.Color(255, 255, 255));
+        facturacion.setIcon(new javax.swing.ImageIcon(System.getProperty("user.dir")+"\\src\\main\\java\\images\\factura.png"));
+        facturacion.setText("Facturacion");
+        facturacion.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
-        jMenuItem5.setText("Balance general");
-        jMenu3.add(jMenuItem5);
+        cierre.setBackground(new java.awt.Color(255, 51, 51));
+        cierre.setFont(new java.awt.Font("Roboto Black", 0, 18)); // NOI18N
+        cierre.setForeground(new java.awt.Color(255, 255, 255));
+        cierre.setIcon(new javax.swing.ImageIcon(System.getProperty("user.dir")+"\\src\\main\\java\\images\\caja.png"));
+        cierre.setText("Cierre de Caja");
+        cierre.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
-        jMenuItem6.setText("Cierre de caja ");
-        jMenu3.add(jMenuItem6);
+        balance.setBackground(new java.awt.Color(255, 204, 102));
+        balance.setFont(new java.awt.Font("Roboto Black", 0, 18)); // NOI18N
+        balance.setForeground(new java.awt.Color(255, 255, 255));
+        balance.setIcon(new javax.swing.ImageIcon(System.getProperty("user.dir")+"\\src\\main\\java\\images\\balance.png"));
+        balance.setText("Balance Mensual");
+        balance.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
-        jMenuBar1.add(jMenu3);
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(cierre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(inventario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(42, 42, 42)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(facturacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(balance, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(facturacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(inventario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(37, 37, 37)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(cierre, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(balance, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(105, Short.MAX_VALUE))
+        );
 
-        setJMenuBar(jMenuBar1);
+        background.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 140, 600, 290));
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(System.getProperty("user.dir")+"\\src\\main\\java\\images\\ventas.png"));
+        jLabel3.setMaximumSize(new java.awt.Dimension(30, 12));
+        jLabel3.setMinimumSize(new java.awt.Dimension(30, 12));
+        jLabel3.setPreferredSize(new java.awt.Dimension(30, 12));
+        jLabel3.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        background.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 0, 140, 130));
+
+        jLabel5.setIcon(new javax.swing.ImageIcon(System.getProperty("user.dir")+"\\src\\main\\java\\images\\logo.png"));
+        background.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 120, 160, -1));
+
+        jLabel4.setIcon(new javax.swing.ImageIcon(System.getProperty("user.dir")+"\\src\\main\\java\\images\\city.png "));
+        background.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 0, -1, 520));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 809, Short.MAX_VALUE)
+            .addComponent(background, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 348, Short.MAX_VALUE)
+            .addComponent(background, javax.swing.GroupLayout.PREFERRED_SIZE, 515, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu2ActionPerformed
-
-    }//GEN-LAST:event_jMenu2ActionPerformed
-
-    private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
+    private void inventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inventarioActionPerformed
         VerInventario inv = new VerInventario();
-        jDesktopPane_menu.add(inv);
         inv.setVisible(true);
-    }//GEN-LAST:event_jMenu1MouseClicked
-
-    private void jMenu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseClicked
-        Factura fact = new Factura();
-        jDesktopPane_menu.add(fact);
-        fact.setVisible(true);
-    }//GEN-LAST:event_jMenu2MouseClicked
+    }//GEN-LAST:event_inventarioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -155,19 +203,16 @@ public class Menu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JLabel Nombre;
+    private javax.swing.JPanel background;
+    private javax.swing.JButton balance;
+    private javax.swing.JButton cierre;
+    private javax.swing.JButton facturacion;
+    private javax.swing.JButton inventario;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
-
-    private void setMaximizable(boolean b) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    private void setIconifiable(boolean b) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 }

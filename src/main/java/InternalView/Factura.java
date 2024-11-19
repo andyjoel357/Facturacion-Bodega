@@ -1,6 +1,8 @@
 package InternalView;
 
 import java.awt.Dimension;
+import vista.Menu;
+import static vista.Menu.jDesktopPane_menu;
 
 /**
  *
@@ -385,7 +387,8 @@ public class Factura extends javax.swing.JInternalFrame  {
     }//GEN-LAST:event_cliente_telfKeyTyped
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-         this.dispose();
+      Menu menu = new Menu();
+        menu.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
