@@ -1,28 +1,28 @@
-
 package InternalView;
 
-
 import conexion.conexion;
+import controlador.Inventario;
+import modelo.inventario;
 import java.awt.Dimension;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-
-
+import vista.Menu;
 
 public class VerInventario extends javax.swing.JFrame {
 
     public VerInventario() {
         initComponents();
-        this.setSize(new Dimension(1215,450));
+        this.setSize(new Dimension(1215, 450));
         this.setTitle("Ver Inventario");
         this.setResizable(false);
-        
+        mostrarInventario("productos");
+
     }
+
     public void mostrarInventario(String tabla) {
         String sql = "select * from " + tabla;
         Statement st;
@@ -64,7 +64,6 @@ public class VerInventario extends javax.swing.JFrame {
         }
     }
 
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -81,7 +80,7 @@ public class VerInventario extends javax.swing.JFrame {
         stock = new javax.swing.JTextField();
         categoria = new javax.swing.JTextField();
         fecha = new javax.swing.JTextField();
-        jButton5 = new javax.swing.JButton();
+        btn_guardar = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         nombre = new javax.swing.JTextField();
@@ -105,10 +104,12 @@ public class VerInventario extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         visor = new javax.swing.JTable();
         jButton3 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btn_actualizar = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setForeground(new java.awt.Color(0, 0, 0));
@@ -149,10 +150,16 @@ public class VerInventario extends javax.swing.JFrame {
         fecha.setToolTipText("Precio");
         fecha.setBorder(null);
 
-        jButton5.setBackground(new java.awt.Color(51, 255, 51));
-        jButton5.setFont(new java.awt.Font("Roboto Black", 0, 18)); // NOI18N
-        jButton5.setForeground(new java.awt.Color(0, 0, 0));
-        jButton5.setText("Guardar Producto");
+        btn_guardar.setBackground(new java.awt.Color(51, 255, 51));
+        btn_guardar.setFont(new java.awt.Font("Roboto Black", 0, 18)); // NOI18N
+        btn_guardar.setForeground(new java.awt.Color(0, 0, 0));
+        btn_guardar.setText("Guardar Producto");
+        btn_guardar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_guardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_guardarActionPerformed(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Roboto Black", 0, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(0, 0, 0));
@@ -232,7 +239,7 @@ public class VerInventario extends javax.swing.JFrame {
                         .addGap(23, 23, 23))))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(130, 130, 130)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btn_guardar, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -272,7 +279,7 @@ public class VerInventario extends javax.swing.JFrame {
                     .addComponent(jLabel10)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btn_guardar, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(24, 24, 24))
         );
 
@@ -389,14 +396,17 @@ public class VerInventario extends javax.swing.JFrame {
         jButton3.setFont(new java.awt.Font("Roboto Black", 0, 18)); // NOI18N
         jButton3.setForeground(new java.awt.Color(0, 0, 0));
         jButton3.setText("Eliminar");
+        jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
-        jButton1.setBackground(new java.awt.Color(255, 255, 102));
-        jButton1.setFont(new java.awt.Font("Roboto Black", 0, 18)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(0, 0, 0));
-        jButton1.setText("Actualizar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btn_actualizar.setBackground(new java.awt.Color(255, 255, 102));
+        btn_actualizar.setFont(new java.awt.Font("Roboto Black", 0, 18)); // NOI18N
+        btn_actualizar.setForeground(new java.awt.Color(0, 0, 0));
+        btn_actualizar.setText("Actualizar");
+        btn_actualizar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_actualizar.setEnabled(false);
+        btn_actualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btn_actualizarActionPerformed(evt);
             }
         });
 
@@ -404,6 +414,7 @@ public class VerInventario extends javax.swing.JFrame {
         jButton2.setFont(new java.awt.Font("Roboto Black", 0, 18)); // NOI18N
         jButton2.setForeground(new java.awt.Color(0, 0, 0));
         jButton2.setText("Editar");
+        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -417,7 +428,7 @@ public class VerInventario extends javax.swing.JFrame {
                         .addGap(27, 27, 27)
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(59, 59, 59)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btn_actualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(45, 45, 45)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 28, Short.MAX_VALUE)))
@@ -431,12 +442,23 @@ public class VerInventario extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_actualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
 
         jPanel4.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 150, -1, 230));
+
+        jButton4.setBackground(new java.awt.Color(255, 0, 0));
+        jButton4.setFont(new java.awt.Font("Roboto Black", 1, 24)); // NOI18N
+        jButton4.setForeground(new java.awt.Color(255, 255, 255));
+        jButton4.setText("MENU");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        jPanel4.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 390, 200, 40));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -446,7 +468,7 @@ public class VerInventario extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 441, Short.MAX_VALUE)
         );
 
         pack();
@@ -456,9 +478,53 @@ public class VerInventario extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btn_buscarActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void btn_actualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_actualizarActionPerformed
+        mostrarInventario("productos");
+        JOptionPane.showMessageDialog(null, "Tabla Actualizada");
+    }//GEN-LAST:event_btn_actualizarActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void btn_guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_guardarActionPerformed
+        inventario cinventario = new inventario();
+        Inventario controlinventario = new Inventario();
+
+        if (codigo.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Llene el campo código");
+        } else if (nombre.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Llene el campo nombre");
+        } else if (stock.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Llene el campo Stock");
+        } else if (precio.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Llene el campo Precio Unitario");
+        } else {
+            // Validar que los campos de código y stock son números enteros
+            if (!validar(codigo.getText())) {
+                JOptionPane.showMessageDialog(null, "El campo código solo acepta números enteros");
+            } else if (!validar(stock.getText())) {
+                JOptionPane.showMessageDialog(null, "El campo Stock solo acepta números enteros");
+            } else if (!validarPrecio(precio.getText())) {
+                JOptionPane.showMessageDialog(null, "El campo Precio Unitario solo acepta números y \".\"");
+            } else {
+                // Si todas las validaciones pasan, se procede a guardar
+                cinventario.setCodigo_barra(Integer.parseInt(codigo.getText().trim()));
+                cinventario.setPrecio_unitario(Double.parseDouble(precio.getText().trim()));
+                cinventario.setStock(Integer.parseInt(stock.getText().trim()));
+                cinventario.setCategoria(categoria.getText().trim());
+                cinventario.setFecha(fecha.getText().trim());
+                cinventario.setDescription(descripcion.getText().trim());
+
+                if (controlinventario.guardar(cinventario)) {
+                    JOptionPane.showMessageDialog(null, "Registro Guardado");
+                    this.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error al guardar");
+                }
+            }
+        }
+    }//GEN-LAST:event_btn_guardarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -496,17 +562,18 @@ public class VerInventario extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_actualizar;
     private javax.swing.JButton btn_buscar;
+    private javax.swing.JButton btn_guardar;
     private javax.swing.JTextField categoria;
     private javax.swing.JTextField categoriaf;
     private javax.swing.JTextField codigo;
     private javax.swing.JTextField codigoBarra;
     private javax.swing.JTextArea descripcion;
     private javax.swing.JTextField fecha;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -533,5 +600,23 @@ public class VerInventario extends javax.swing.JFrame {
 
     private void setLocationRelativeTo(Object object) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    private boolean validar(String valor) {
+        try {
+            Integer.parseInt(valor);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    private boolean validarPrecio(String valor) {
+        try {
+            Double.parseDouble(valor);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }

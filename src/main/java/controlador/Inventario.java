@@ -6,14 +6,15 @@ import java.sql.SQLException;
 import modelo.inventario;
 
 public class Inventario {
-    //Metodo para registrar libros 
-
+    
+    // Método para registrar libros 
     public boolean guardar(inventario objeto) {
         boolean respuesta = false;
-        Connection cn = conexion.conexion.conectar();
+        String sql = "INSERT INTO lista_libros (id_inventario, codigo_barra, nombre, descripcion, precio_unitario, stock, categoria, fecha) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try {
-            PreparedStatement consulta = cn.prepareStatement("insert into lista_libros values(?,?,?,?,?,?,?)");
+        try (Connection cn = conexion.conexion.conectar();
+             PreparedStatement consulta = cn.prepareStatement(sql)) {
+
             consulta.setInt(1, objeto.getId_inventario());
             consulta.setInt(2, objeto.getCodigo_barra());
             consulta.setString(3, objeto.getNombre());
@@ -23,28 +24,22 @@ public class Inventario {
             consulta.setString(7, objeto.getCategoria());
             consulta.setString(8, objeto.getFecha());
 
-            if (consulta.executeUpdate() > 0) {
-                respuesta = true;
-
-            }
-
-            cn.close();
+            respuesta = consulta.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.out.println("Error al guardar Libro " + e);
+            System.out.println("Error al guardar Libro: " + e.getMessage());
         }
 
         return respuesta;
-
     }
-    //aqui va  // ,int id
 
+    // Método para editar libros
     public boolean editar(inventario objeto, int id) {
         boolean respuesta = false;
-        Connection cn = conexion.conexion.conectar();
+        String sql = "UPDATE productos SET id_inventario = ?, codigo_barra = ?, nombre = ?, descripcion = ?, precio_unitario = ?, stock = ?, categoria = ?, fecha = ? WHERE id_inventario = ?";
 
-        try {
-            PreparedStatement consulta = cn.prepareStatement("update lista_libros set titulo = ?, autor = ?, numero_paginas = ?, codigo = ?, stock = ?, precioU = ? where id_libro ='" + id + "'");
+        try (Connection cn = conexion.conexion.conectar();
+             PreparedStatement consulta = cn.prepareStatement(sql)) {
 
             consulta.setInt(1, objeto.getId_inventario());
             consulta.setInt(2, objeto.getCodigo_barra());
@@ -54,44 +49,36 @@ public class Inventario {
             consulta.setInt(6, objeto.getStock());
             consulta.setString(7, objeto.getCategoria());
             consulta.setString(8, objeto.getFecha());
+            consulta.setInt(9, id); // Establecer el ID para la cláusula WHERE
 
-            if (consulta.executeUpdate() > 0) {
-                respuesta = true;
-
-            }
-
-            cn.close();
+            respuesta = consulta.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.out.println("Error al guardar Libro " + e);
+            System.out.println("Error al editar Libro: " + e.getMessage());
         }
 
         return respuesta;
-
     }
 
-    public boolean eliminar(Inventario objeto, int id) {
+    // Método para eliminar libros
+    public boolean eliminar(int id) {
         boolean respuesta = false;
-        Connection cn = conexion.conexion.conectar();
+        String sql = "DELETE FROM lista_libros WHERE id_inventario = ?";
 
-        try {
-            PreparedStatement consulta = cn.prepareStatement("delete from lista_libros where id_libro ='" + id + "'");
-            consulta.executeUpdate();
+        try (Connection cn = conexion.conexion.conectar();
+             PreparedStatement consulta = cn.prepareStatement(sql)) {
 
-            if (consulta.executeUpdate() > 0) {
-                respuesta = true;
+            consulta.setInt(1, id); // Usar parámetro para evitar inyecciones SQL
 
-            }
-
-            cn.close();
+            respuesta = consulta.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.out.println("Error al eliminar Libro " + e);
+            System.out.println("Error al eliminar Libro: " + e.getMessage());
         }
 
         return respuesta;
-
     }
+}
 
     //SI SE REQUIERE CONSULTAR CATEGORIA
     //public boolean existeCategoria(String inventario) {
@@ -110,4 +97,4 @@ public class Inventario {
     //   }
     //  return respuesta;
     // }
-}
+

@@ -9,6 +9,7 @@ public class inventario {
     private int stock;
     private String categoria;
     private String fecha;
+    
 public inventario (){
     this.id_inventario =0;
     this.codigo_barra = 0;

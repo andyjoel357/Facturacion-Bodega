@@ -1,5 +1,6 @@
 package vista;
 
+import InternalView.Factura;
 import InternalView.VerInventario;
 import java.awt.Dimension;
 import javax.swing.JDesktopPane;
@@ -15,12 +16,12 @@ public class Menu extends javax.swing.JFrame {
 
     public Menu() {
         initComponents();
-       this.setSize(new Dimension(982, 515));
+        this.setSize(new Dimension(982, 515));
         this.setLocationRelativeTo(null);
         this.setLayout(null);
         this.setTitle("Menu Principal");
         this.setResizable(false);
-        
+
         jDesktopPane_menu = new JDesktopPane();
 
         Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
@@ -89,6 +90,11 @@ public class Menu extends javax.swing.JFrame {
         facturacion.setIcon(new javax.swing.ImageIcon(System.getProperty("user.dir")+"\\src\\main\\java\\images\\factura.png"));
         facturacion.setText("Facturacion");
         facturacion.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        facturacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                facturacionActionPerformed(evt);
+            }
+        });
 
         cierre.setBackground(new java.awt.Color(255, 51, 51));
         cierre.setFont(new java.awt.Font("Roboto Black", 0, 18)); // NOI18N
@@ -166,6 +172,11 @@ public class Menu extends javax.swing.JFrame {
         VerInventario inv = new VerInventario();
         inv.setVisible(true);
     }//GEN-LAST:event_inventarioActionPerformed
+
+    private void facturacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_facturacionActionPerformed
+        Factura fact = new Factura();
+        fact.setVisible(true);        
+    }//GEN-LAST:event_facturacionActionPerformed
 
     /**
      * @param args the command line arguments
