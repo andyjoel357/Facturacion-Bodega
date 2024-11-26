@@ -10,7 +10,7 @@ public class Inventario {
     // Método para registrar libros 
     public boolean guardar(inventario objeto) {
         boolean respuesta = false;
-        String sql = "INSERT INTO lista_libros (id_inventario, codigo_barra, nombre, descripcion, precio_unitario, stock, categoria, fecha) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO productos (id_producto, codigo_barra, nombre, descripcion, precio_unitario, stock, categoria, fecha) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection cn = conexion.conexion.conectar();
              PreparedStatement consulta = cn.prepareStatement(sql)) {
@@ -27,7 +27,7 @@ public class Inventario {
             respuesta = consulta.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.out.println("Error al guardar Libro: " + e.getMessage());
+            System.out.println("Error al guardar producto: " + e.getMessage());
         }
 
         return respuesta;
@@ -36,7 +36,7 @@ public class Inventario {
     // Método para editar libros
     public boolean editar(inventario objeto, int id) {
         boolean respuesta = false;
-        String sql = "UPDATE productos SET id_inventario = ?, codigo_barra = ?, nombre = ?, descripcion = ?, precio_unitario = ?, stock = ?, categoria = ?, fecha = ? WHERE id_inventario = ?";
+        String sql = "UPDATE productos SET id_producto = ?, codigo_barra = ?, nombre = ?, descripcion = ?, precio_unitario = ?, stock = ?, categoria = ?, fecha = ? WHERE id_inventario = ?";
 
         try (Connection cn = conexion.conexion.conectar();
              PreparedStatement consulta = cn.prepareStatement(sql)) {
@@ -54,7 +54,7 @@ public class Inventario {
             respuesta = consulta.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.out.println("Error al editar Libro: " + e.getMessage());
+            System.out.println("Error al editar producto: " + e.getMessage());
         }
 
         return respuesta;
@@ -63,7 +63,7 @@ public class Inventario {
     // Método para eliminar libros
     public boolean eliminar(int id) {
         boolean respuesta = false;
-        String sql = "DELETE FROM lista_libros WHERE id_inventario = ?";
+        String sql = "DELETE FROM productos WHERE id_producto = ?";
 
         try (Connection cn = conexion.conexion.conectar();
              PreparedStatement consulta = cn.prepareStatement(sql)) {
@@ -73,7 +73,7 @@ public class Inventario {
             respuesta = consulta.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.out.println("Error al eliminar Libro: " + e.getMessage());
+            System.out.println("Error al eliminar producto: " + e.getMessage());
         }
 
         return respuesta;

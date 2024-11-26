@@ -475,54 +475,7 @@ public class VerInventario extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_filtroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_filtroActionPerformed
-        StringBuilder sql = new StringBuilder("SELECT * FROM productos WHERE 1=1");
-
-        // Agregar condiciones según los campos llenos
-        if (!flt_nombre.getText().trim().isEmpty()) {
-            sql.append(" AND nombre LIKE '%").append(flt_nombre.getText().trim()).append("%'");
-        }
-        if (!flt_categoria.getText().trim().isEmpty()) {
-            sql.append(" AND categoria LIKE '%").append(flt_categoria.getText().trim()).append("%'");
-        }
-        if (!flt_codigo.getText().trim().isEmpty()) {
-            sql.append(" AND codigo_barra = ").append(flt_codigo.getText().trim());
-        }
-
-        // Limpiar el modelo de la tabla antes de agregar nuevos resultados
-        DefaultTableModel model = new DefaultTableModel();
-        model.addColumn("ID");
-        model.addColumn("Codigo de Barra");
-        model.addColumn("Nombre");
-        model.addColumn("Descripcion");
-        model.addColumn("Precio Unitario");
-        model.addColumn("Stock");
-        model.addColumn("Categoria");
-        model.addColumn("Fecha");
-        visor.setModel(model);
-
-        String[] datos = new String[8];
-
-        try {
-            conexion con = new conexion();
-            Connection cn = con.conectar();
-            Statement st = cn.createStatement();
-            ResultSet rs = st.executeQuery(sql.toString());
-
-            while (rs.next()) {
-                datos[0] = rs.getString("id_producto");
-                datos[1] = rs.getString("codigo_barra");
-                datos[2] = rs.getString("nombre");
-                datos[3] = rs.getString("descripcion");
-                datos[4] = rs.getString("precio_unitario");
-                datos[5] = rs.getString("stock");
-                datos[6] = rs.getString("categoria");
-                datos[7] = rs.getString("fecha_creacion");
-                model.addRow(datos);
-            }
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error: " + e.toString());
-        }
+ 
     }//GEN-LAST:event_btn_filtroActionPerformed
 
     private void btn_actualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_actualizarActionPerformed
