@@ -436,15 +436,15 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="tf_filtro" alignment="0" min="-2" pref="131" max="-2" attributes="0"/>
-                          <Component id="categoriaf" alignment="0" min="-2" pref="131" max="-2" attributes="0"/>
+                          <Component id="flt_nombre" alignment="0" min="-2" pref="131" max="-2" attributes="0"/>
+                          <Component id="flt_categoria" alignment="0" min="-2" pref="131" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                       <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="codigoBarra" min="-2" pref="142" max="-2" attributes="0"/>
+                      <Component id="flt_codigo" min="-2" pref="142" max="-2" attributes="0"/>
                       <EmptySpace pref="31" max="32767" attributes="0"/>
-                      <Component id="btn_buscar" min="-2" pref="94" max="-2" attributes="0"/>
+                      <Component id="btn_filtro" min="-2" pref="94" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -455,12 +455,12 @@
                       <EmptySpace pref="12" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="tf_filtro" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="flt_nombre" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="categoriaf" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="flt_categoria" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                   </Group>
@@ -468,12 +468,12 @@
                       <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="codigoBarra" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="flt_codigo" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="btn_buscar" min="-2" pref="48" max="-2" attributes="0"/>
+                      <Component id="btn_filtro" min="-2" pref="48" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -491,7 +491,7 @@
                 <Property name="text" type="java.lang.String" value="Nombre:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="tf_filtro">
+            <Component class="javax.swing.JTextField" name="flt_nombre">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Roboto" size="12" style="0"/>
@@ -501,7 +501,7 @@
                 </Property>
               </Properties>
             </Component>
-            <Component class="javax.swing.JButton" name="btn_buscar">
+            <Component class="javax.swing.JButton" name="btn_filtro">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="cc" green="ff" red="cc" type="rgb"/>
@@ -518,7 +518,7 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_buscarActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_filtroActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel2">
@@ -532,7 +532,7 @@
                 <Property name="text" type="java.lang.String" value="Categoria:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="categoriaf">
+            <Component class="javax.swing.JTextField" name="flt_categoria">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Roboto" size="12" style="0"/>
@@ -553,7 +553,7 @@
                 <Property name="text" type="java.lang.String" value="Codigo de barra:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="codigoBarra">
+            <Component class="javax.swing.JTextField" name="flt_codigo">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Roboto" size="12" style="0"/>
