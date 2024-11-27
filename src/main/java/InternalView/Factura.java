@@ -47,17 +47,17 @@ public class Factura extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        cliente_nombre1 = new javax.swing.JTextField();
+        nombre_Cliente = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
-        cliente_ci1 = new javax.swing.JTextField();
+        CI_cliente = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
-        cliente_direccion1 = new javax.swing.JTextField();
+        direccion_cliente = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
-        cliente_telf1 = new javax.swing.JTextField();
+        telf_cliente = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
-        cliente_correo1 = new javax.swing.JTextField();
+        correo_cliente = new javax.swing.JTextField();
         jLabel20 = new javax.swing.JLabel();
-        cliente_apellido = new javax.swing.JTextField();
+        apellido_cliente = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -254,12 +254,12 @@ public class Factura extends javax.swing.JFrame {
         jLabel5.setForeground(new java.awt.Color(0, 0, 0));
         jLabel5.setText("Nombre:");
 
-        cliente_nombre1.setBackground(new java.awt.Color(153, 153, 255));
-        cliente_nombre1.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
-        cliente_nombre1.setForeground(new java.awt.Color(0, 0, 0));
-        cliente_nombre1.addKeyListener(new java.awt.event.KeyAdapter() {
+        nombre_Cliente.setBackground(new java.awt.Color(153, 153, 255));
+        nombre_Cliente.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        nombre_Cliente.setForeground(new java.awt.Color(0, 0, 0));
+        nombre_Cliente.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                cliente_nombre1KeyTyped(evt);
+                nombre_ClienteKeyTyped(evt);
             }
         });
 
@@ -267,12 +267,12 @@ public class Factura extends javax.swing.JFrame {
         jLabel11.setForeground(new java.awt.Color(0, 0, 0));
         jLabel11.setText("Direccion:");
 
-        cliente_ci1.setBackground(new java.awt.Color(153, 153, 255));
-        cliente_ci1.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
-        cliente_ci1.setForeground(new java.awt.Color(0, 0, 0));
-        cliente_ci1.addKeyListener(new java.awt.event.KeyAdapter() {
+        CI_cliente.setBackground(new java.awt.Color(153, 153, 255));
+        CI_cliente.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        CI_cliente.setForeground(new java.awt.Color(0, 0, 0));
+        CI_cliente.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                cliente_ci1KeyTyped(evt);
+                CI_clienteKeyTyped(evt);
             }
         });
 
@@ -280,20 +280,20 @@ public class Factura extends javax.swing.JFrame {
         jLabel13.setForeground(new java.awt.Color(0, 0, 0));
         jLabel13.setText("RUC/CI:");
 
-        cliente_direccion1.setBackground(new java.awt.Color(153, 153, 255));
-        cliente_direccion1.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
-        cliente_direccion1.setForeground(new java.awt.Color(0, 0, 0));
+        direccion_cliente.setBackground(new java.awt.Color(153, 153, 255));
+        direccion_cliente.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        direccion_cliente.setForeground(new java.awt.Color(0, 0, 0));
 
         jLabel15.setFont(new java.awt.Font("Roboto Black", 0, 18)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(0, 0, 0));
         jLabel15.setText("Telefono:");
 
-        cliente_telf1.setBackground(new java.awt.Color(153, 153, 255));
-        cliente_telf1.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
-        cliente_telf1.setForeground(new java.awt.Color(0, 0, 0));
-        cliente_telf1.addKeyListener(new java.awt.event.KeyAdapter() {
+        telf_cliente.setBackground(new java.awt.Color(153, 153, 255));
+        telf_cliente.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        telf_cliente.setForeground(new java.awt.Color(0, 0, 0));
+        telf_cliente.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                cliente_telf1KeyTyped(evt);
+                telf_clienteKeyTyped(evt);
             }
         });
 
@@ -301,25 +301,25 @@ public class Factura extends javax.swing.JFrame {
         jLabel16.setForeground(new java.awt.Color(0, 0, 0));
         jLabel16.setText("Correo /E-mail:");
 
-        cliente_correo1.setBackground(new java.awt.Color(153, 153, 255));
-        cliente_correo1.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
-        cliente_correo1.setForeground(new java.awt.Color(0, 0, 0));
+        correo_cliente.setBackground(new java.awt.Color(153, 153, 255));
+        correo_cliente.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        correo_cliente.setForeground(new java.awt.Color(0, 0, 0));
 
         jLabel20.setFont(new java.awt.Font("Roboto Black", 0, 18)); // NOI18N
         jLabel20.setForeground(new java.awt.Color(0, 0, 0));
         jLabel20.setText("Apellido:");
 
-        cliente_apellido.setBackground(new java.awt.Color(153, 153, 255));
-        cliente_apellido.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
-        cliente_apellido.setForeground(new java.awt.Color(0, 0, 0));
-        cliente_apellido.addActionListener(new java.awt.event.ActionListener() {
+        apellido_cliente.setBackground(new java.awt.Color(153, 153, 255));
+        apellido_cliente.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        apellido_cliente.setForeground(new java.awt.Color(0, 0, 0));
+        apellido_cliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cliente_apellidoActionPerformed(evt);
+                apellido_clienteActionPerformed(evt);
             }
         });
-        cliente_apellido.addKeyListener(new java.awt.event.KeyAdapter() {
+        apellido_cliente.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                cliente_apellidoKeyTyped(evt);
+                apellido_clienteKeyTyped(evt);
             }
         });
 
@@ -335,25 +335,25 @@ public class Factura extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(cliente_ci1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(CI_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(77, 77, 77)
                         .addComponent(jLabel15)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cliente_telf1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(telf_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(9, 9, 9)
                         .addComponent(jLabel16)
                         .addGap(18, 18, 18)
-                        .addComponent(cliente_correo1, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(correo_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(cliente_nombre1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(nombre_Cliente, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel20)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cliente_apellido, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(apellido_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel11)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cliente_direccion1, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(direccion_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(12, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -364,21 +364,21 @@ public class Factura extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(jLabel5))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(cliente_nombre1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(nombre_Cliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel11)
-                        .addComponent(cliente_direccion1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(direccion_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel20)
-                        .addComponent(cliente_apellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(apellido_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(cliente_ci1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(CI_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel13))
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel15)
-                        .addComponent(cliente_telf1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(telf_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel16)
-                        .addComponent(cliente_correo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(correo_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(13, Short.MAX_VALUE))
         );
 
@@ -605,43 +605,43 @@ public class Factura extends javax.swing.JFrame {
 
     private void cliente_ciKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cliente_ciKeyTyped
         char c = evt.getKeyChar();
-        if (c < '0' || c < '9')
+        if (c < '0' || c > '9')
             evt.consume();
     }//GEN-LAST:event_cliente_ciKeyTyped
 
     private void cliente_telfKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cliente_telfKeyTyped
         char c = evt.getKeyChar();
-        if (c < '0' || c < '9')
+        if (c < '0' || c > '9')
             evt.consume();
     }//GEN-LAST:event_cliente_telfKeyTyped
 
-    private void cliente_nombre1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cliente_nombre1KeyTyped
+    private void nombre_ClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombre_ClienteKeyTyped
         char c = evt.getKeyChar();
         if ((c < 'a' || c < 'z') && (c < 'A' || c < 'Z'))
             evt.consume();
-    }//GEN-LAST:event_cliente_nombre1KeyTyped
+    }//GEN-LAST:event_nombre_ClienteKeyTyped
 
-    private void cliente_ci1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cliente_ci1KeyTyped
+    private void CI_clienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CI_clienteKeyTyped
         char c = evt.getKeyChar();
-        if (c < '0' || c < '9')
+        if (c < '0' || c > '9')
             evt.consume();
-    }//GEN-LAST:event_cliente_ci1KeyTyped
+    }//GEN-LAST:event_CI_clienteKeyTyped
 
-    private void cliente_telf1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cliente_telf1KeyTyped
+    private void telf_clienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_telf_clienteKeyTyped
         char c = evt.getKeyChar();
-        if (c < '0' || c < '9')
+        if (c < '0' || c > '9')
             evt.consume();
-    }//GEN-LAST:event_cliente_telf1KeyTyped
+    }//GEN-LAST:event_telf_clienteKeyTyped
 
-    private void cliente_apellidoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cliente_apellidoKeyTyped
+    private void apellido_clienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_apellido_clienteKeyTyped
         char c = evt.getKeyChar();
         if ((c < 'a' || c < 'z') && (c < 'A' || c < 'Z'))
             evt.consume();
-    }//GEN-LAST:event_cliente_apellidoKeyTyped
+    }//GEN-LAST:event_apellido_clienteKeyTyped
 
-    private void cliente_apellidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cliente_apellidoActionPerformed
+    private void apellido_clienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_apellido_clienteActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cliente_apellidoActionPerformed
+    }//GEN-LAST:event_apellido_clienteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -679,21 +679,19 @@ public class Factura extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField CI_cliente;
     private javax.swing.JButton Editar;
-    private javax.swing.JTextField cliente_apellido;
+    private javax.swing.JTextField apellido_cliente;
     private javax.swing.JTextField cliente_ci;
-    private javax.swing.JTextField cliente_ci1;
     private javax.swing.JTextField cliente_correo;
-    private javax.swing.JTextField cliente_correo1;
     private javax.swing.JTextField cliente_direccion;
-    private javax.swing.JTextField cliente_direccion1;
     private javax.swing.JTextField cliente_nombre;
-    private javax.swing.JTextField cliente_nombre1;
     private javax.swing.JTextField cliente_telf;
-    private javax.swing.JTextField cliente_telf1;
     private javax.swing.JButton cobrar;
     private javax.swing.JButton cobrar1;
+    private javax.swing.JTextField correo_cliente;
     private javax.swing.JTextField descuento;
+    private javax.swing.JTextField direccion_cliente;
     private javax.swing.JButton eliminar;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
@@ -724,9 +722,11 @@ public class Factura extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextField nombre_Cliente;
     private javax.swing.JLabel numero;
     private javax.swing.JLabel numero1;
     private javax.swing.JTextField subtotal;
+    private javax.swing.JTextField telf_cliente;
     private javax.swing.JTextField total;
     // End of variables declaration//GEN-END:variables
 }

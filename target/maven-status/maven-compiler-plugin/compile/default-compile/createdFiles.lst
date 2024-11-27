@@ -1,3 +1,4 @@
+InternalView\VerInventario$10.class
 InternalView\VerInventario.class
 InternalView\CierreCaja$1.class
 InternalView\Factura$7.class
@@ -7,6 +8,7 @@ InternalView\Factura$5.class
 vista\Menu.class
 InternalView\VerInventario$5.class
 InternalView\Factura$3.class
+InternalView\VerInventario$8.class
 InternalView\Factura$8.class
 InternalView\Factura.class
 vista\Menu$1.class
@@ -14,10 +16,12 @@ InternalView\VerInventario$3.class
 controlador\Inventario.class
 InternalView\VerInventario$4.class
 InternalView\VerInventario$6.class
+InternalView\VerInventario$9.class
 controlador\RegistrarFactura.class
 InternalView\Factura$1.class
 InternalView\Factura$6.class
 InternalView\VerInventario$1.class
+InternalView\VerInventario$11.class
 vista\Menu$3.class
 conexion\conexion.class
 modelo\inventario.class
@@ -25,6 +29,8 @@ InternalView\CierreCaja.class
 InternalView\Factura$10.class
 InternalView\Factura$11.class
 InternalView\Factura$4.class
+InternalView\VerInventario$7.class
+InternalView\VerInventario$12.class
 InternalView\Factura$9.class
 InternalView\VerInventario$2.class
 InternalView\CierreCaja$2.class

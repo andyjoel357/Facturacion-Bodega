@@ -7,10 +7,10 @@ import modelo.inventario;
 
 public class Inventario {
     
-    // Método para registrar libros 
+    // Método para registrar  
     public boolean guardar(inventario objeto) {
         boolean respuesta = false;
-        String sql = "INSERT INTO productos (id_producto, codigo_barra, nombre, descripcion, precio_unitario, stock, categoria, fecha) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO productos (id_producto, codigo_barra, nombre, descripcion, precio_unitario, stock, categoria, fecha_creacion) VALUES (?,?,?,?,?,?,?,?)";
 
         try (Connection cn = conexion.conexion.conectar();
              PreparedStatement consulta = cn.prepareStatement(sql)) {
@@ -36,7 +36,7 @@ public class Inventario {
     // Método para editar libros
     public boolean editar(inventario objeto, int id) {
         boolean respuesta = false;
-        String sql = "UPDATE productos SET id_producto = ?, codigo_barra = ?, nombre = ?, descripcion = ?, precio_unitario = ?, stock = ?, categoria = ?, fecha = ? WHERE id_inventario = ?";
+        String sql = "UPDATE productos SET id_producto = ?, codigo_barra = ?, nombre = ?, descripcion = ?, precio_unitario = ?, stock = ?, categoria = ?, fecha_creacion = ? WHERE id_inventario = ?";
 
         try (Connection cn = conexion.conexion.conectar();
              PreparedStatement consulta = cn.prepareStatement(sql)) {
@@ -79,22 +79,4 @@ public class Inventario {
         return respuesta;
     }
 }
-
-    //SI SE REQUIERE CONSULTAR CATEGORIA
-    //public boolean existeCategoria(String inventario) {
-    //  boolean respuesta = false;
-    // String sql="select autor from lista_libros where autor ='"+inventario+"';";
-    // Statement st;
-    // try {
-    //   Connection cn = Conexion.conectar();
-    //  st=cn.createStatement();
-    //  ResultSet rs= st.executeQuery(sql);
-    // while(rs.next()){
-    //   respuesta = true;
-    //  }
-    //  } catch (SQLException e) {
-    //    System.out.println("Error al consultar Libro " + e);
-    //   }
-    //  return respuesta;
-    // }
 

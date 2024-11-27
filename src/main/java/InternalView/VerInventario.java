@@ -24,10 +24,7 @@ public class VerInventario extends javax.swing.JFrame {
     }
 
     public void mostrarInventario(String tabla) {
-        String sql = "select * from " + tabla;
-        Statement st;
-        conexion con = new conexion();
-        Connection cn = conexion.conectar();
+        String sql = "SELECT * FROM " + tabla;
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("ID");
         model.addColumn("Codigo de Barra");
@@ -42,9 +39,13 @@ public class VerInventario extends javax.swing.JFrame {
 
         String[] datos = new String[8];
 
-        try {
-            st = cn.createStatement();
-            ResultSet rs = st.executeQuery(sql);
+        try (Connection cn = conexion.conectar(); Statement st = cn.createStatement(); ResultSet rs = st.executeQuery(sql)) {
+
+            if (cn == null) {
+                JOptionPane.showMessageDialog(null, "Error: No se pudo establecer la conexión a la base de datos.");
+                return;
+            }
+
             while (rs.next()) {
                 datos[0] = rs.getString(1);
                 datos[1] = rs.getString(2);
@@ -58,9 +59,7 @@ public class VerInventario extends javax.swing.JFrame {
             }
 
         } catch (SQLException e) {
-
-            JOptionPane.showMessageDialog(null, "Error" + e.toString());
-
+            JOptionPane.showMessageDialog(null, "Error al mostrar el inventario: " + e.getMessage());
         }
     }
 
@@ -100,6 +99,7 @@ public class VerInventario extends javax.swing.JFrame {
         flt_categoria = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         flt_codigo = new javax.swing.JTextField();
+        Filtro = new javax.swing.JComboBox<>();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         visor = new javax.swing.JTable();
@@ -125,24 +125,44 @@ public class VerInventario extends javax.swing.JFrame {
         codigo.setForeground(new java.awt.Color(0, 0, 0));
         codigo.setToolTipText("codigo de barra");
         codigo.setBorder(null);
+        codigo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                codigoKeyTyped(evt);
+            }
+        });
 
         precio.setBackground(new java.awt.Color(204, 255, 204));
         precio.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
         precio.setForeground(new java.awt.Color(0, 0, 0));
         precio.setToolTipText("Precio");
         precio.setBorder(null);
+        precio.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                precioKeyTyped(evt);
+            }
+        });
 
         stock.setBackground(new java.awt.Color(204, 255, 204));
         stock.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
         stock.setForeground(new java.awt.Color(0, 0, 0));
         stock.setToolTipText("Precio");
         stock.setBorder(null);
+        stock.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                stockKeyTyped(evt);
+            }
+        });
 
         categoria.setBackground(new java.awt.Color(204, 255, 204));
         categoria.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
         categoria.setForeground(new java.awt.Color(0, 0, 0));
         categoria.setToolTipText("Precio");
         categoria.setBorder(null);
+        categoria.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                categoriaKeyTyped(evt);
+            }
+        });
 
         fecha.setBackground(new java.awt.Color(204, 255, 204));
         fecha.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
@@ -174,6 +194,11 @@ public class VerInventario extends javax.swing.JFrame {
         nombre.setForeground(new java.awt.Color(0, 0, 0));
         nombre.setToolTipText("");
         nombre.setBorder(null);
+        nombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                nombreKeyTyped(evt);
+            }
+        });
 
         jLabel6.setFont(new java.awt.Font("Roboto Black", 0, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(0, 0, 0));
@@ -200,6 +225,11 @@ public class VerInventario extends javax.swing.JFrame {
         descripcion.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
         descripcion.setForeground(new java.awt.Color(0, 0, 0));
         descripcion.setRows(5);
+        descripcion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                descripcionKeyTyped(evt);
+            }
+        });
         jScrollPane1.setViewportView(descripcion);
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
@@ -319,6 +349,8 @@ public class VerInventario extends javax.swing.JFrame {
 
         flt_codigo.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
 
+        Filtro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "id_producto", "codigo_barra", "nombre", "descripcion", "precio_unitario", "stock ", "categoria", "fecha_creacion" }));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -332,10 +364,15 @@ public class VerInventario extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(flt_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(flt_categoria, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(flt_codigo, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(flt_codigo, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(60, 60, 60)
+                        .addComponent(Filtro, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addComponent(btn_filtro, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(22, 22, 22))
@@ -350,7 +387,8 @@ public class VerInventario extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(flt_categoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(flt_categoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Filtro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(16, 16, 16)
@@ -475,7 +513,62 @@ public class VerInventario extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_filtroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_filtroActionPerformed
- 
+        String pBuscar = flt_categoria.getText().trim();
+        Connection cn = conexion.conectar();
+        Statement st;
+        String sql = "";
+                //        id_producto
+                //codigo_barra
+                //nombre
+                //descripcion
+                //precio_unitario
+                //stock 
+                //categoria
+                //fecha_creacion
+        if (Filtro.getSelectedItem().equals("Id")) {
+            sql = "select * from producto where id_producto = '" + pBuscar + "'";
+        } else if (Filtro.getSelectedItem().equals("codigo")) {
+            sql = "select * from producto where codigo_barra = '" + pBuscar + "'";
+        } else if (Filtro.getSelectedItem().equals("nombre")) {
+            sql = "select * from producto where nombre = '" + pBuscar + "'";
+        } else if (Filtro.getSelectedItem().equals("descripcion")) {
+            sql = "select * from producto where descripcion = '" + pBuscar + "'";
+        } else if (Filtro.getSelectedItem().equals("precio_unitario")) {
+            sql = "select * from producto where precio_unitario = '" + pBuscar + "'";
+        } else if (Filtro.getSelectedItem().equals("stock")) {
+            sql = "select * from producto where stock = '" + pBuscar + "'";
+        } else if (Filtro.getSelectedItem().equals("categoria")) {
+            sql = "select * from producto where categoria = '" + pBuscar + "'";
+        } else if (Filtro.getSelectedItem().equals("fecha")) {
+            sql = "select * from producto where fecha = '" + pBuscar + "'";
+        }
+
+        if (!Filtro.getSelectedItem().equals("Filtro")) {
+            try {
+                st = cn.createStatement();
+                ResultSet rs = st.executeQuery(sql);
+                if (rs.next()) {
+                    int id = rs.getInt("id_producto") - 1;
+
+                    visor.setRowSelectionInterval(id, id);
+                    visor.scrollRectToVisible(visor.getCellRect(id, 0, true));
+
+                } else {
+
+                    JOptionPane.showMessageDialog(null, "Nota de Entrega no Encontrada");
+
+                }
+                flt_nombre.setText("");
+                cn.close();
+
+            } catch (SQLException e) {
+                System.out.println("Error al Buscar Nota de Entrega" + e);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Seleccione un Filtro para la Busqueda");
+
+        }
+
     }//GEN-LAST:event_btn_filtroActionPerformed
 
     private void btn_actualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_actualizarActionPerformed
@@ -508,23 +601,68 @@ public class VerInventario extends javax.swing.JFrame {
             } else if (!validarPrecio(precio.getText())) {
                 JOptionPane.showMessageDialog(null, "El campo Precio Unitario solo acepta números y \".\"");
             } else {
-                // Si todas las validaciones pasan, se procede a guardar
-                cinventario.setCodigo_barra(Integer.parseInt(codigo.getText().trim()));
-                cinventario.setPrecio_unitario(Double.parseDouble(precio.getText().trim()));
-                cinventario.setStock(Integer.parseInt(stock.getText().trim()));
-                cinventario.setCategoria(categoria.getText().trim());
-                cinventario.setFecha(fecha.getText().trim());
-                cinventario.setDescription(descripcion.getText().trim());
+                try {
+                    // Convertir el código de barra a int
+                    int codigoBarra = Integer.parseInt(codigo.getText().trim());
+                    int stockValue = Integer.parseInt(stock.getText().trim());
+                    double precioValue = Double.parseDouble(precio.getText().trim());
 
-                if (controlinventario.guardar(cinventario)) {
-                    JOptionPane.showMessageDialog(null, "Registro Guardado");
-                    this.dispose();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Error al guardar");
+                    // Si todas las validaciones pasan, se procede a guardar
+                    cinventario.setCodigo_barra(codigoBarra);
+                    cinventario.setNombre(nombre.getText().trim());
+                    cinventario.setPrecio_unitario(precioValue);
+                    cinventario.setStock(stockValue);
+                    cinventario.setCategoria(categoria.getText().trim());
+                    cinventario.setFecha(fecha.getText().trim());
+                    cinventario.setDescription(descripcion.getText().trim());
+
+                    if (controlinventario.guardar(cinventario)) {
+                        JOptionPane.showMessageDialog(null, "Registro Guardado");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Error al guardar");
+                    }
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Error: Asegúrese de que el código y el stock son números válidos.");
                 }
             }
         }
     }//GEN-LAST:event_btn_guardarActionPerformed
+
+    private void codigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigoKeyTyped
+        char c = evt.getKeyChar();
+        if (c < '0' || c > '9')
+            evt.consume();
+    }//GEN-LAST:event_codigoKeyTyped
+
+    private void stockKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_stockKeyTyped
+        char c = evt.getKeyChar();
+        if (c < '0' || c > '9')
+            evt.consume();
+    }//GEN-LAST:event_stockKeyTyped
+
+    private void precioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_precioKeyTyped
+        char c = evt.getKeyChar();
+        if (c < '0' || c > '9')
+            evt.consume();
+    }//GEN-LAST:event_precioKeyTyped
+
+    private void nombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombreKeyTyped
+        char c = evt.getKeyChar();
+        if ((c < 'a' || c < 'z') && (c < 'A' || c < 'Z'))
+            evt.consume();
+    }//GEN-LAST:event_nombreKeyTyped
+
+    private void categoriaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_categoriaKeyTyped
+        char c = evt.getKeyChar();
+        if ((c < 'a' || c < 'z') && (c < 'A' || c < 'Z'))
+            evt.consume();
+    }//GEN-LAST:event_categoriaKeyTyped
+
+    private void descripcionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_descripcionKeyTyped
+        char c = evt.getKeyChar();
+        if ((c < 'a' || c < 'z') && (c < 'A' || c < 'Z'))
+            evt.consume();
+    }//GEN-LAST:event_descripcionKeyTyped
 
     /**
      * @param args the command line arguments
@@ -562,6 +700,7 @@ public class VerInventario extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> Filtro;
     private javax.swing.JButton btn_actualizar;
     private javax.swing.JButton btn_filtro;
     private javax.swing.JButton btn_guardar;
