@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import vista.Menu;
 
@@ -99,13 +100,12 @@ public class VerInventario extends javax.swing.JFrame {
         flt_categoria = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         flt_codigo = new javax.swing.JTextField();
-        Filtro = new javax.swing.JComboBox<>();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         visor = new javax.swing.JTable();
         jButton3 = new javax.swing.JButton();
-        btn_actualizar = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        btn_actualizar = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -192,7 +192,7 @@ public class VerInventario extends javax.swing.JFrame {
         nombre.setBackground(new java.awt.Color(204, 255, 204));
         nombre.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
         nombre.setForeground(new java.awt.Color(0, 0, 0));
-        nombre.setToolTipText("");
+        nombre.setToolTipText("Nombre");
         nombre.setBorder(null);
         nombre.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -349,8 +349,6 @@ public class VerInventario extends javax.swing.JFrame {
 
         flt_codigo.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
 
-        Filtro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "id_producto", "codigo_barra", "nombre", "descripcion", "precio_unitario", "stock ", "categoria", "fecha_creacion" }));
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -364,15 +362,10 @@ public class VerInventario extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(flt_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(flt_categoria, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(flt_codigo, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(60, 60, 60)
-                        .addComponent(Filtro, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(26, 26, 26)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(flt_codigo, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addComponent(btn_filtro, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(22, 22, 22))
@@ -387,8 +380,7 @@ public class VerInventario extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(flt_categoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Filtro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(flt_categoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(16, 16, 16)
@@ -436,23 +428,21 @@ public class VerInventario extends javax.swing.JFrame {
         jButton3.setText("Eliminar");
         jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
-        btn_actualizar.setBackground(new java.awt.Color(255, 255, 102));
-        btn_actualizar.setFont(new java.awt.Font("Roboto Black", 0, 18)); // NOI18N
-        btn_actualizar.setForeground(new java.awt.Color(0, 0, 0));
-        btn_actualizar.setText("Actualizar");
-        btn_actualizar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btn_actualizar.setEnabled(false);
-        btn_actualizar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_actualizarActionPerformed(evt);
-            }
-        });
-
         jButton2.setBackground(new java.awt.Color(102, 255, 102));
         jButton2.setFont(new java.awt.Font("Roboto Black", 0, 18)); // NOI18N
         jButton2.setForeground(new java.awt.Color(0, 0, 0));
         jButton2.setText("Editar");
         jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
+        btn_actualizar.setBackground(new java.awt.Color(153, 153, 255));
+        btn_actualizar.setFont(new java.awt.Font("Roboto Black", 0, 18)); // NOI18N
+        btn_actualizar.setForeground(new java.awt.Color(0, 0, 0));
+        btn_actualizar.setText("Actualizar");
+        btn_actualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_actualizarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -465,9 +455,9 @@ public class VerInventario extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(27, 27, 27)
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(59, 59, 59)
-                        .addComponent(btn_actualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(45, 45, 45)
+                        .addGap(48, 48, 48)
+                        .addComponent(btn_actualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(42, 42, 42)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 28, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -478,10 +468,11 @@ public class VerInventario extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_actualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btn_actualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
 
@@ -513,69 +504,57 @@ public class VerInventario extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_filtroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_filtroActionPerformed
-        String pBuscar = flt_categoria.getText().trim();
-        Connection cn = conexion.conectar();
-        Statement st;
-        String sql = "";
-                //        id_producto
-                //codigo_barra
-                //nombre
-                //descripcion
-                //precio_unitario
-                //stock 
-                //categoria
-                //fecha_creacion
-        if (Filtro.getSelectedItem().equals("Id")) {
-            sql = "select * from producto where id_producto = '" + pBuscar + "'";
-        } else if (Filtro.getSelectedItem().equals("codigo")) {
-            sql = "select * from producto where codigo_barra = '" + pBuscar + "'";
-        } else if (Filtro.getSelectedItem().equals("nombre")) {
-            sql = "select * from producto where nombre = '" + pBuscar + "'";
-        } else if (Filtro.getSelectedItem().equals("descripcion")) {
-            sql = "select * from producto where descripcion = '" + pBuscar + "'";
-        } else if (Filtro.getSelectedItem().equals("precio_unitario")) {
-            sql = "select * from producto where precio_unitario = '" + pBuscar + "'";
-        } else if (Filtro.getSelectedItem().equals("stock")) {
-            sql = "select * from producto where stock = '" + pBuscar + "'";
-        } else if (Filtro.getSelectedItem().equals("categoria")) {
-            sql = "select * from producto where categoria = '" + pBuscar + "'";
-        } else if (Filtro.getSelectedItem().equals("fecha")) {
-            sql = "select * from producto where fecha = '" + pBuscar + "'";
-        }
+        String pBuscarNombre = flt_nombre.getText().trim();
+        String pBuscarCodigo = flt_codigo.getText().trim();
+        String pBuscarCategoria = flt_categoria.getText().trim();
 
-        if (!Filtro.getSelectedItem().equals("Filtro")) {
-            try {
-                st = cn.createStatement();
-                ResultSet rs = st.executeQuery(sql);
-                if (rs.next()) {
-                    int id = rs.getInt("id_producto") - 1;
+        createFilteredTableModel(visor, pBuscarNombre, pBuscarCodigo, pBuscarCategoria);
 
-                    visor.setRowSelectionInterval(id, id);
-                    visor.scrollRectToVisible(visor.getCellRect(id, 0, true));
-
-                } else {
-
-                    JOptionPane.showMessageDialog(null, "Nota de Entrega no Encontrada");
-
-                }
-                flt_nombre.setText("");
-                cn.close();
-
-            } catch (SQLException e) {
-                System.out.println("Error al Buscar Nota de Entrega" + e);
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Seleccione un Filtro para la Busqueda");
-
-        }
+        flt_nombre.setText("");
+        flt_codigo.setText("");
+        flt_categoria.setText("");
 
     }//GEN-LAST:event_btn_filtroActionPerformed
 
-    private void btn_actualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_actualizarActionPerformed
-        mostrarInventario("productos");
-        JOptionPane.showMessageDialog(null, "Tabla Actualizada");
-    }//GEN-LAST:event_btn_actualizarActionPerformed
+    private void createFilteredTableModel(JTable table, String nombreFilter, String codigoFilter, String categoriaFilter) {
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("ID");
+        model.addColumn("Codigo de Barra");
+        model.addColumn("Nombre");
+        model.addColumn("Descripcion");
+        model.addColumn("Precio Unitario");
+        model.addColumn("Stock");
+        model.addColumn("Categoria");
+        model.addColumn("Fecha");
 
+        StringBuilder sql = new StringBuilder("SELECT * FROM productos WHERE 1=1");
+
+        if (!nombreFilter.isEmpty()) {
+            sql.append(" AND nombre LIKE '%").append(nombreFilter).append("%'");
+        }
+        if (!codigoFilter.isEmpty()) {
+            sql.append(" AND codigo_barra LIKE '%").append(codigoFilter).append("%'");
+        }
+        if (!categoriaFilter.isEmpty()) {
+            sql.append(" AND categoria LIKE '%").append(categoriaFilter).append("%'");
+        }
+
+        try (Connection cn = conexion.conectar(); Statement st = cn.createStatement(); ResultSet rs = st.executeQuery(sql.toString())) {
+
+            while (rs.next()) {
+                Object[] row = new Object[8];
+                for (int i = 0; i < 8; i++) {
+                    row[i] = rs.getObject(i + 1);
+                }
+                model.addRow(row);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al buscar producto: " + e);
+        }
+
+        table.setModel(model);
+    }
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         this.dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
@@ -618,6 +597,14 @@ public class VerInventario extends javax.swing.JFrame {
 
                     if (controlinventario.guardar(cinventario)) {
                         JOptionPane.showMessageDialog(null, "Registro Guardado");
+                        mostrarInventario("productos");
+                        codigo.setText("");
+                        stock.setText("");
+                        nombre.setText("");
+                        precio.setText("");
+                        fecha.setText("");
+                        categoria.setText("");
+                        descripcion.setText("");
                     } else {
                         JOptionPane.showMessageDialog(null, "Error al guardar");
                     }
@@ -655,8 +642,13 @@ public class VerInventario extends javax.swing.JFrame {
     }//GEN-LAST:event_categoriaKeyTyped
 
     private void descripcionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_descripcionKeyTyped
-  
+
     }//GEN-LAST:event_descripcionKeyTyped
+
+    private void btn_actualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_actualizarActionPerformed
+        mostrarInventario("productos");
+        JOptionPane.showMessageDialog(null, "Tabla Actualizada");
+    }//GEN-LAST:event_btn_actualizarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -694,7 +686,6 @@ public class VerInventario extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> Filtro;
     private javax.swing.JButton btn_actualizar;
     private javax.swing.JButton btn_filtro;
     private javax.swing.JButton btn_guardar;
