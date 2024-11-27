@@ -641,27 +641,21 @@ public class VerInventario extends javax.swing.JFrame {
     }//GEN-LAST:event_stockKeyTyped
 
     private void precioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_precioKeyTyped
-        char c = evt.getKeyChar();
-        if (c < '0' || c > '9')
-            evt.consume();
+
     }//GEN-LAST:event_precioKeyTyped
 
     private void nombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombreKeyTyped
-        char c = evt.getKeyChar();
-        if ((c < 'a' || c < 'z') && (c < 'A' || c < 'Z'))
-            evt.consume();
+
     }//GEN-LAST:event_nombreKeyTyped
 
     private void categoriaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_categoriaKeyTyped
         char c = evt.getKeyChar();
-        if ((c < 'a' || c < 'z') && (c < 'A' || c < 'Z'))
+        if ((c < 'a' || c > 'z') && (c < 'A' || c > 'Z'))
             evt.consume();
     }//GEN-LAST:event_categoriaKeyTyped
 
     private void descripcionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_descripcionKeyTyped
-        char c = evt.getKeyChar();
-        if ((c < 'a' || c < 'z') && (c < 'A' || c < 'Z'))
-            evt.consume();
+  
     }//GEN-LAST:event_descripcionKeyTyped
 
     /**
