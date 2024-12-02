@@ -6,14 +6,13 @@ import java.sql.SQLException;
 import modelo.inventario;
 
 public class Inventario {
-    
+
     // Método para registrar  
     public boolean guardar(inventario objeto) {
         boolean respuesta = false;
         String sql = "INSERT INTO productos (id_producto, codigo_barra, nombre, descripcion, precio_unitario, stock, categoria, fecha_creacion) VALUES (?,?,?,?,?,?,?,?)";
 
-        try (Connection cn = conexion.conexion.conectar();
-             PreparedStatement consulta = cn.prepareStatement(sql)) {
+        try (Connection cn = conexion.conexion.conectar(); PreparedStatement consulta = cn.prepareStatement(sql)) {
 
             consulta.setInt(1, objeto.getId_inventario());
             consulta.setInt(2, objeto.getCodigo_barra());
@@ -38,8 +37,7 @@ public class Inventario {
         boolean respuesta = false;
         String sql = "UPDATE productos SET id_producto = ?, codigo_barra = ?, nombre = ?, descripcion = ?, precio_unitario = ?, stock = ?, categoria = ?, fecha_creacion = ? WHERE id_inventario = ?";
 
-        try (Connection cn = conexion.conexion.conectar();
-             PreparedStatement consulta = cn.prepareStatement(sql)) {
+        try (Connection cn = conexion.conexion.conectar(); PreparedStatement consulta = cn.prepareStatement(sql)) {
 
             consulta.setInt(1, objeto.getId_inventario());
             consulta.setInt(2, objeto.getCodigo_barra());
@@ -63,20 +61,35 @@ public class Inventario {
     // Método para eliminar libros
     public boolean eliminar(int id) {
         boolean respuesta = false;
-        String sql = "DELETE FROM productos WHERE id_producto = ?";
+        Connection cn = null;
 
-        try (Connection cn = conexion.conexion.conectar();
-             PreparedStatement consulta = cn.prepareStatement(sql)) {
+        try {
+            // Establecer la conexión
+            cn = conexion.conexion.conectar();
 
-            consulta.setInt(1, id); // Usar parámetro para evitar inyecciones SQL
+            // Usar PreparedStatement para evitar inyecciones SQL
+            PreparedStatement consulta = cn.prepareStatement("DELETE FROM productos WHERE id_producto = ?");
+            consulta.setInt(1, id); // Establecer el parámetro de la consulta
 
-            respuesta = consulta.executeUpdate() > 0;
+            // Ejecutar la consulta
+            int filasAfectadas = consulta.executeUpdate();
+
+            // Verificar si se eliminó alguna fila
+            respuesta = (filasAfectadas > 0);
 
         } catch (SQLException e) {
-            System.out.println("Error al eliminar producto: " + e.getMessage());
+            System.out.println("Error al eliminar producto: " + e);
+        } finally {
+            // Asegurarse de cerrar la conexión
+            if (cn != null) {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                    System.out.println("Error al cerrar la conexión: " + e);
+                }
+            }
         }
 
         return respuesta;
     }
 }
-

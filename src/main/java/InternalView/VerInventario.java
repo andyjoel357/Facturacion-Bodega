@@ -103,7 +103,7 @@ public class VerInventario extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         visor = new javax.swing.JTable();
-        jButton3 = new javax.swing.JButton();
+        btn_eliminar = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         btn_actualizar = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
@@ -329,7 +329,10 @@ public class VerInventario extends javax.swing.JFrame {
         btn_filtro.setFont(new java.awt.Font("Roboto Black", 1, 18)); // NOI18N
         btn_filtro.setForeground(new java.awt.Color(0, 0, 0));
         btn_filtro.setText("Filtrar");
+        btn_filtro.setToolTipText("Presiona de nuevo para limpiar");
         btn_filtro.setBorder(null);
+        btn_filtro.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_filtro.setDefaultCapable(false);
         btn_filtro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_filtroActionPerformed(evt);
@@ -422,11 +425,16 @@ public class VerInventario extends javax.swing.JFrame {
         visor.setToolTipText("");
         jScrollPane2.setViewportView(visor);
 
-        jButton3.setBackground(new java.awt.Color(255, 0, 0));
-        jButton3.setFont(new java.awt.Font("Roboto Black", 0, 18)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(0, 0, 0));
-        jButton3.setText("Eliminar");
-        jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_eliminar.setBackground(new java.awt.Color(255, 0, 0));
+        btn_eliminar.setFont(new java.awt.Font("Roboto Black", 0, 18)); // NOI18N
+        btn_eliminar.setForeground(new java.awt.Color(0, 0, 0));
+        btn_eliminar.setText("Eliminar");
+        btn_eliminar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_eliminarActionPerformed(evt);
+            }
+        });
 
         jButton2.setBackground(new java.awt.Color(102, 255, 102));
         jButton2.setFont(new java.awt.Font("Roboto Black", 0, 18)); // NOI18N
@@ -438,6 +446,7 @@ public class VerInventario extends javax.swing.JFrame {
         btn_actualizar.setFont(new java.awt.Font("Roboto Black", 0, 18)); // NOI18N
         btn_actualizar.setForeground(new java.awt.Color(0, 0, 0));
         btn_actualizar.setText("Actualizar");
+        btn_actualizar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_actualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_actualizarActionPerformed(evt);
@@ -454,7 +463,7 @@ public class VerInventario extends javax.swing.JFrame {
                     .addComponent(jScrollPane2)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(27, 27, 27)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btn_eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(48, 48, 48)
                         .addComponent(btn_actualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(42, 42, 42)
@@ -470,7 +479,7 @@ public class VerInventario extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btn_eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btn_actualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(21, Short.MAX_VALUE))
@@ -650,6 +659,28 @@ public class VerInventario extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "Tabla Actualizada");
     }//GEN-LAST:event_btn_actualizarActionPerformed
 
+    private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
+        int selectedRowIndex = visor.getSelectedRow();
+        if (selectedRowIndex != -1) {
+            int option = JOptionPane.showConfirmDialog(null, "Esta Seguro de Eliminar este Libro?", "!ADVERTENCIA!", JOptionPane.YES_NO_OPTION);
+
+            switch (option) {
+                case 0://Si
+                    eliminarInventario();
+                    break;
+                case 1:
+                    visor.clearSelection();
+                    break;
+                default:
+                    visor.clearSelection();
+                    break;
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Seleccione un Registro para Eliminar");
+        }
+
+    }//GEN-LAST:event_btn_eliminarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -687,6 +718,7 @@ public class VerInventario extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_actualizar;
+    private javax.swing.JButton btn_eliminar;
     private javax.swing.JButton btn_filtro;
     private javax.swing.JButton btn_guardar;
     private javax.swing.JTextField categoria;
@@ -697,7 +729,6 @@ public class VerInventario extends javax.swing.JFrame {
     private javax.swing.JTextField flt_codigo;
     private javax.swing.JTextField flt_nombre;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -742,5 +773,31 @@ public class VerInventario extends javax.swing.JFrame {
         } catch (NumberFormatException e) {
             return false;
         }
+    }
+
+    public boolean eliminarInventario() {
+        int selectedRowIndex = visor.getSelectedRow();
+        if (selectedRowIndex == -1) {
+            JOptionPane.showMessageDialog(null, "Por favor, selecciona un producto para eliminar.");
+            return false;
+        }
+        DefaultTableModel model = (DefaultTableModel) visor.getModel();
+
+        int id = Integer.parseInt(model.getValueAt(selectedRowIndex, 0).toString());
+
+        // Crear la instancia de controlInventario
+        Inventario controlInventario = new Inventario();
+
+        // Intentar eliminar el registro
+        if (!controlInventario.eliminar(id)) {
+            JOptionPane.showMessageDialog(null, "Error al eliminar");
+            return false;
+        } else {
+            // Solo eliminar la fila si la eliminación fue exitosa
+            model.removeRow(selectedRowIndex);
+            JOptionPane.showMessageDialog(null, "Se ha eliminado exitosamente");
+        }
+
+        return true;
     }
 }
