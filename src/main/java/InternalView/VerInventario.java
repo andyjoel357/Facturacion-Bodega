@@ -21,7 +21,19 @@ public class VerInventario extends javax.swing.JFrame {
         this.setTitle("Ver Inventario");
         this.setResizable(false);
         mostrarInventario("productos");
-
+        cargarCategorias();
+    }
+    private void cargarCategorias() {
+        String sql = "SELECT DISTINCT categoria FROM productos"; // Consulta para obtener categorías únicas
+        try (Connection cn = conexion.conectar(); Statement st = cn.createStatement(); ResultSet rs = st.executeQuery(sql)) {
+            flt_categoria.removeAllItems(); // Limpiar el combo box antes de agregar elementos
+            while (rs.next()) {
+                String categoria = rs.getString("categoria");
+                flt_categoria.addItem(categoria); // Agregar categoría al combo box
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar categorías: " + e.getMessage());
+        }
     }
 
     public void mostrarInventario(String tabla) {
@@ -97,14 +109,13 @@ public class VerInventario extends javax.swing.JFrame {
         flt_nombre = new javax.swing.JTextField();
         btn_filtro = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        flt_categoria = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         flt_codigo = new javax.swing.JTextField();
+        flt_categoria = new javax.swing.JComboBox<>();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         visor = new javax.swing.JTable();
         btn_eliminar = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         btn_actualizar = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
 
@@ -343,14 +354,15 @@ public class VerInventario extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("Categoria:");
 
-        flt_categoria.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
-        flt_categoria.setForeground(new java.awt.Color(0, 0, 0));
-
         jLabel3.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Codigo de barra:");
 
         flt_codigo.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+
+        flt_categoria.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        flt_categoria.setForeground(new java.awt.Color(0, 0, 0));
+        flt_categoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -362,9 +374,9 @@ public class VerInventario extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(flt_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(flt_categoria, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(flt_nombre, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)
+                    .addComponent(flt_categoria, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(26, 26, 26)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -436,12 +448,6 @@ public class VerInventario extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setBackground(new java.awt.Color(102, 255, 102));
-        jButton2.setFont(new java.awt.Font("Roboto Black", 0, 18)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(0, 0, 0));
-        jButton2.setText("Editar");
-        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-
         btn_actualizar.setBackground(new java.awt.Color(153, 153, 255));
         btn_actualizar.setFont(new java.awt.Font("Roboto Black", 0, 18)); // NOI18N
         btn_actualizar.setForeground(new java.awt.Color(0, 0, 0));
@@ -460,16 +466,15 @@ public class VerInventario extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 657, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btn_eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(48, 48, 48)
+                        .addGap(106, 106, 106)
                         .addComponent(btn_actualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(42, 42, 42)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 28, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addGap(70, 70, 70))))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -477,11 +482,9 @@ public class VerInventario extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btn_eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btn_actualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_actualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
 
@@ -515,13 +518,13 @@ public class VerInventario extends javax.swing.JFrame {
     private void btn_filtroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_filtroActionPerformed
         String pBuscarNombre = flt_nombre.getText().trim();
         String pBuscarCodigo = flt_codigo.getText().trim();
-        String pBuscarCategoria = flt_categoria.getText().trim();
+        String pBuscarCategoria = flt_categoria.getSelectedItem()!= null ? flt_categoria.getSelectedItem().toString() : ""; 
 
         createFilteredTableModel(visor, pBuscarNombre, pBuscarCodigo, pBuscarCategoria);
 
         flt_nombre.setText("");
         flt_codigo.setText("");
-        flt_categoria.setText("");
+        flt_categoria.setSelectedItem(-1);
 
     }//GEN-LAST:event_btn_filtroActionPerformed
 
@@ -607,6 +610,7 @@ public class VerInventario extends javax.swing.JFrame {
                     if (controlinventario.guardar(cinventario)) {
                         JOptionPane.showMessageDialog(null, "Registro Guardado");
                         mostrarInventario("productos");
+                        cargarCategorias();
                         codigo.setText("");
                         stock.setText("");
                         nombre.setText("");
@@ -656,17 +660,19 @@ public class VerInventario extends javax.swing.JFrame {
 
     private void btn_actualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_actualizarActionPerformed
         mostrarInventario("productos");
+        cargarCategorias();
         JOptionPane.showMessageDialog(null, "Tabla Actualizada");
     }//GEN-LAST:event_btn_actualizarActionPerformed
 
     private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
         int selectedRowIndex = visor.getSelectedRow();
         if (selectedRowIndex != -1) {
-            int option = JOptionPane.showConfirmDialog(null, "Esta Seguro de Eliminar este Libro?", "!ADVERTENCIA!", JOptionPane.YES_NO_OPTION);
+            int option = JOptionPane.showConfirmDialog(null, "Esta Seguro que desea eliminar?", "!ADVERTENCIA!", JOptionPane.YES_NO_OPTION);
 
             switch (option) {
                 case 0://Si
                     eliminarInventario();
+                    cargarCategorias();
                     break;
                 case 1:
                     visor.clearSelection();
@@ -725,10 +731,9 @@ public class VerInventario extends javax.swing.JFrame {
     private javax.swing.JTextField codigo;
     private javax.swing.JTextArea descripcion;
     private javax.swing.JTextField fecha;
-    private javax.swing.JTextField flt_categoria;
+    private javax.swing.JComboBox<String> flt_categoria;
     private javax.swing.JTextField flt_codigo;
     private javax.swing.JTextField flt_nombre;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
