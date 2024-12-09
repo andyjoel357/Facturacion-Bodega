@@ -16,7 +16,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import modelo.DetalleVenta;
-import modelo.DetalleCabecera;
 import modelo.cliente;
 
 /**
@@ -35,12 +34,12 @@ public class Factura extends javax.swing.JFrame {
     private String nombre = "";
     private int stock = 0; //stock en la db
     private double precio_unitario = 0.0;
-    private int porcentajeiva =0;
+    private int porcentajeiva = 0;
 
     //DETLLE VENTA
     private int cantidad = 0; //productos a comprar
     private double subtotal = 0.0; // cantidad por precio
-    private double descuento =0.0;
+    private double descuento = 0.0;
     private double iva = 0.0;
     private double total = 0.0;
 
@@ -849,13 +848,11 @@ public class Factura extends javax.swing.JFrame {
                 // Create a new product entry
                 producto = new DetalleVenta(
                         auxIdDetalle,
-                        1,
                         id_producto,
                         nombre,
                         cantidad,
                         precio_unitario,
                         subtotal,
-                        descuento,
                         iva,
                         subtotal
                 );
@@ -910,11 +907,13 @@ public class Factura extends javax.swing.JFrame {
     private void cobrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cobrarActionPerformed
         cliente Cliente = new cliente();
         DetalleVenta detalleVenta = new DetalleVenta();
-        DetalleCabecera detalleCabecera = new DetalleCabecera();
         venta Venta = new venta();
+
         String fechaActual = "";
         Date date = new Date();
         fechaActual = new SimpleDateFormat("yyyy/MM/dd").format(date);
+
+        // Validaciones de campos
         if (nombre_Cliente.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Llene el campo Nombre");
         } else if (apellido_cliente.getText().isEmpty()) {
@@ -943,12 +942,7 @@ public class Factura extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Llene el campo IVA");
         } else if (!clc_iva.getText().matches("\\d+(\\.\\d{1,2})?")) {
             JOptionPane.showMessageDialog(null, "El campo IVA debe ser un número válido");
-        } else if (txt_total.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Llene el campo Total");
-        } else if (!txt_total.getText().matches("\\d+(\\.\\d{1,2})?")) {
-            JOptionPane.showMessageDialog(null, "El campo Total debe ser un número válido");
         } else {
-
             // REGISTRAR cabecera
             Cliente.setId_cliente(0);
             Cliente.setNombre(nombre_Cliente.getText());
@@ -956,27 +950,50 @@ public class Factura extends javax.swing.JFrame {
             Cliente.setCorreo(correo_cliente.getText());
             Cliente.setCi(CI_cliente.getText());
             Cliente.setTelefono(telf_cliente.getText());
+            Cliente.setDirecion(direccion_cliente.getText());
 
             if (Venta.guardarCabezera(Cliente)) {
                 // Obtener id del dato guardado
                 this.idDetalleVenta();
                 JOptionPane.showMessageDialog(null, "Venta Registrada");
-
                 // Generar PDF
                 RegistrarFactura pdf = new RegistrarFactura();
                 pdf.Datos(idDatos);
-                pdf.generarPDF();
+
+                // Calculate total with VAT
+                double iva = 0;
+                try {
+                    double ivaInput = Double.parseDouble(clc_iva.getText());
+                    iva = ivaInput / 100; // Convertir porcentaje a decimal
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(null, "Por favor, ingrese un valor válido para el IVA.");
+                    return; // Salir del método si hay un error
+                }
+
+                // Calcular el total con IVA
+                double subtotalGeneral = Double.parseDouble(txt_subtotal.getText());
+                double ivaCalculado = subtotalGeneral * iva;
+                double totalConIva = subtotalGeneral + ivaCalculado;
+
+                // Asignar el total calculado a `txt_total`
+                txt_total.setText(String.valueOf(totalConIva));
+
 
                 // GUARDAR DETALLE
                 for (DetalleVenta elemento : listarproductos) {
-                    detalleVenta.setId_factura(0);
-                    detalleVenta.setId_cabecera(0);
+                    detalleVenta.setId_factura(idDatos);
+                    detalleVenta.setId_producto(elemento.getId_producto());
                     detalleVenta.setNombre(elemento.getNombre());
                     detalleVenta.setCantidad(elemento.getCantidad());
                     detalleVenta.setPrecio_unitario(elemento.getPrecio_unitario());
                     detalleVenta.setSubtotal(elemento.getSubtotal());
-                    detalleVenta.setIva(Double.parseDouble(clc_iva.getText()));
-                    detalleVenta.setTotal(Double.parseDouble(txt_total.getText()));
+
+                    // Calcular IVA y total para el elemento actual
+                    double ivaElemento = elemento.getSubtotal() * iva;
+                    double totalElemento = elemento.getSubtotal() + ivaElemento;
+
+                    detalleVenta.setIva(ivaElemento);
+                    detalleVenta.setTotal(totalElemento);
 
                     if (Venta.guardarDetalle(detalleVenta)) {
                         // RESETEAR CAMPOS
@@ -985,6 +1002,7 @@ public class Factura extends javax.swing.JFrame {
                         direccion_cliente.setText("");
                         CI_cliente.setText("");
                         telf_cliente.setText("");
+                        correo_cliente.setText("");
                         txt_subtotal.setText("");
                         clc_iva.setText("");
                         txt_total.setText("");
@@ -1001,11 +1019,9 @@ public class Factura extends javax.swing.JFrame {
                 listaTabla();
 
             } else {
-                JOptionPane.showMessageDialog(null, "Error al guardar cabezera");
+                JOptionPane.showMessageDialog(null, "Error al guardar cabecera");
             }
         }
-
-
     }//GEN-LAST:event_cobrarActionPerformed
 
     /**
@@ -1142,40 +1158,22 @@ public class Factura extends javax.swing.JFrame {
 
     public void calcularTotal() {
         subtotalGeneral = 0;
-        totalGeneral = 0;
         try {
-            double ivaInput = Double.parseDouble(clc_iva.getText());
-            iva = ivaInput / 100; // Convertir porcentaje a decimal
-        } catch (NumberFormatException e) {
-            // Manejar el error si el formato no es válido
-            JOptionPane.showMessageDialog(null, "Por favor, ingrese un valor válido para el IVA.");
-            return; // Salir del método si hay un error
+            // Solo calcular el subtotal
+            for (DetalleVenta elemento : listarproductos) {
+                double subtotalElemento = elemento.getPrecio_unitario() * elemento.getCantidad();
+                elemento.setSubtotal(subtotalElemento);
+                subtotalGeneral += subtotalElemento;
+            }
+
+            // Redondear el subtotal
+            subtotalGeneral = (double) Math.round(subtotalGeneral * 100) / 100;
+
+            // Actualizar la interfaz
+            txt_subtotal.setText(String.valueOf(subtotalGeneral));
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al calcular el total.");
         }
-        // Calcular subtotal y total para cada elemento en la lista
-        for (DetalleVenta elemento : listarproductos) {
-            // Calcular subtotal para el elemento actual
-            double subtotalElemento = elemento.getPrecio_unitario() * elemento.getCantidad();
-            elemento.setSubtotal(subtotalElemento); // Asumiendo que DetalleVenta tiene un método setSubtotal
-
-            // Calcular IVA para el elemento actual
-            double ivaCalculado = subtotalElemento * iva;
-
-            // Calcular total para el elemento actual
-            double totalElemento = subtotalElemento + ivaCalculado;
-            elemento.setTotal(totalElemento); // Asumiendo que DetalleVenta tiene un método setTotal
-
-            // Acumular en los totales generales
-            subtotalGeneral += subtotalElemento;
-            totalGeneral += totalElemento;
-        }
-
-        // Redondear los totales generales
-        subtotalGeneral = (double) Math.round(subtotalGeneral * 100) / 100;
-        totalGeneral = (double) Math.round(totalGeneral * 100) / 100;
-
-        // Actualizar la interfaz
-        txt_subtotal.setText(String.valueOf(subtotalGeneral));
-        txt_total.setText(String.valueOf(totalGeneral));
     }
 
     private void Eliminar() {
@@ -1213,38 +1211,47 @@ public class Factura extends javax.swing.JFrame {
     }
 
     private void RestarStock(int id, int cantidad) {
+        int stockActual = 0;
 
-        int stock = 0;
+        // Retrieve current stock
+        try (Connection cn = conexion.conectar()) {
+            String sql = "SELECT stock FROM productos WHERE id_producto = ?";
+            PreparedStatement st = cn.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
 
-        try {
-            Connection cn = conexion.conectar();
-            String sql = "select id_producto, stock from productos where id_producto = '" + id + "'";
-            Statement st;
-            st = cn.createStatement();
-
-            ResultSet rs = st.executeQuery(sql);
-
-            while (rs.next()) {
-                stock = rs.getInt("stock");
-
+            if (rs.next()) {
+                stockActual = rs.getInt("stock");
+            } else {
+                System.out.println("Producto no encontrado con ID: " + id);
+                return; // Exit if product is not found
             }
-            cn.close();
-
         } catch (SQLException e) {
-            System.out.println("Error al restar stock 1" + e);
+            System.out.println("Error al obtener stock: " + e.getMessage());
+            return; // Exit on error
         }
-        try {
-            Connection cn = conexion.conectar();
-            PreparedStatement consulta = cn.prepareStatement("update productos set stock=? where id_producto='" + id + "'");
-            int stockNueva = stock - cantidad;
-            consulta.setInt(1, stockNueva);
-            if (consulta.executeUpdate() > 0) {
 
+        // Update stock
+        int nuevoStock = stockActual - cantidad;
+        if (nuevoStock < 0) {
+            System.out.println("No hay suficiente stock para restar. Stock actual: " + stockActual + ", cantidad a restar: " + cantidad);
+            return; // Exit if not enough stock
+        }
+
+        try (Connection cn = conexion.conectar()) {
+            String sql = "UPDATE productos SET stock = ? WHERE id_producto = ?";
+            PreparedStatement consulta = cn.prepareStatement(sql);
+            consulta.setInt(1, nuevoStock);
+            consulta.setInt(2, id);
+
+            int filasActualizadas = consulta.executeUpdate();
+            if (filasActualizadas > 0) {
+                System.out.println("Stock actualizado correctamente. Nuevo stock: " + nuevoStock);
+            } else {
+                System.out.println("Error al actualizar el stock. ID del producto: " + id);
             }
-            cn.close();
         } catch (SQLException e) {
-
-            System.out.println("Error al restar stock 2" + e);
+            System.out.println("Error al restar stock: " + e.getMessage());
         }
     }
 

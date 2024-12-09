@@ -53,15 +53,14 @@ public class venta {
         Connection cn = conexion.conectar();
         
         try {
-            PreparedStatement consulta = cn.prepareStatement("insert factura values(?,?,?,?,?,?,?,?)");
+            PreparedStatement consulta = cn.prepareStatement("insert factura values(?,?,?,?,?,?,?)");
             consulta.setInt(1, 0);
             consulta.setInt(2, idClienteRegistrado);
-            consulta.setInt(3, objeto.getId_cabecera());
-            consulta.setInt(4, objeto.getId_producto());
-            consulta.setDouble(5, objeto.getPrecio_unitario());
-            consulta.setDouble(6, objeto.getSubtotal());
-            consulta.setDouble(7, objeto.getIva());
-            consulta.setDouble(8, objeto.getTotal());
+            consulta.setInt(3, objeto.getId_producto());
+            consulta.setDouble(4, objeto.getPrecio_unitario());
+            consulta.setDouble(5, objeto.getSubtotal());
+            consulta.setDouble(6, objeto.getIva());
+            consulta.setDouble(7, objeto.getTotal());
             
             
 

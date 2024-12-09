@@ -31,20 +31,20 @@ public class RegistrarFactura {
     private String correo;
     private String telefono;
     private String ci;
-    
-    private String fecha ="";
-    private String nombrePDF ="";
-    
+
+    private String fecha = "";
+    private String nombrePDF = "";
+
     public void Datos(int id) {
         Connection cn = conexion.conexion.conectar();
-        String sql = "select*from cliente where id_cliente= '" + id + "'";
+        String sql = "select*from clientes where id_cliente= '" + id + "'";
         Statement st;
 
         try {
             st = cn.createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
-                numeroF=rs.getString("id_detalleCabecera");
+                numeroF = rs.getString("id_cliente");
                 nombre = rs.getString("nombre");
                 apellido = rs.getString("apellido");
                 correo = rs.getString("correo");
@@ -56,48 +56,39 @@ public class RegistrarFactura {
             System.out.println("ERROR AL OBTENER DATOS" + e);
         }
     }
-     public void generarPDF() {
+
+    public void generarPDF() {
         try {
             //fecha actual
-
             Date date = new Date();
             fecha = new SimpleDateFormat("yyyy/MM/dd").format(date);
-            String fecha = "";
-            for (int i = 0; i < fecha.length(); i++) {
-                if (fecha.charAt(i) == '/') {
-                    fecha = fecha.replace("/", "_");
-                }
-
-            }
+            fecha = fecha.replace("/", "_"); // Cambiar la variable a la correcta
 
             nombrePDF = "Venta_" + nombre + "_" + apellido + "_" + fecha + ".pdf";
 
             FileOutputStream archivo;
-            File file = new File("src/pdf/" + nombrePDF);
+            String desktopPath = System.getProperty("user.home") + "/Desktop/";
+            File file = new File(desktopPath + nombrePDF);
             archivo = new FileOutputStream(file);
 
             Document doc = new Document();
             PdfWriter.getInstance(doc, archivo);
             doc.open();
 
-            Image img = Image.getInstance("src/images/caja.png");
+// Agregar encabezado
             Paragraph fechas = new Paragraph();
             Font negr = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD, BaseColor.BLUE);
-            fechas.add(Chunk.NEWLINE);//agregar neuva linea
-            fechas.add("Nota de venta: "+numeroF + "\nFecha: " + fecha + "\n\n");
+            fechas.add("Nota de venta: " + numeroF + "\nFecha: " + fecha + "\n\n");
+            doc.add(fechas); // Asegúrate de agregar el párrafo al documento
 
+// Encabezado de la tabla
             PdfPTable Encabezado = new PdfPTable(4);
-
             Encabezado.setWidthPercentage(100);
             Encabezado.getDefaultCell().setBorder(0);
-
             float[] ColumnaEncabezado = new float[]{20f, 30f, 70f, 40f};
-
             Encabezado.setWidths(ColumnaEncabezado);
             Encabezado.setHorizontalAlignment(Element.ALIGN_LEFT);
-
-            Encabezado.addCell(img);
-
+// Datos de la bodega
             String rucE = "Ruc bodega";
             String nombreE = "Bodega";
             String telefonoE = "telefono bodega";
@@ -106,7 +97,7 @@ public class RegistrarFactura {
             Encabezado.addCell("");
             Encabezado.addCell("Ruc: " + rucE + "\nNombre: " + nombreE + "\nTelefono: " + telefonoE + "\nDireccion: " + direccionE);
             Encabezado.addCell(fechas);
-            doc.add(Encabezado);
+            doc.add(Encabezado); // Asegúrate de agregar la tabla al documento
 
             //Cuerpo
             Paragraph datos = new Paragraph();
@@ -202,7 +193,7 @@ public class RegistrarFactura {
             Paragraph info = new Paragraph();
 
             info.add(Chunk.NEWLINE);
-            info.add("Descuento: "+ Factura.clc_iva.getText()+"%\n\n");
+            info.add("Iva: " + Factura.clc_iva.getText() + "%\n\n");
             info.add("Total a pagar: " + Factura.txt_total.getText());
             info.setAlignment(Element.ALIGN_RIGHT);
             doc.add(info);
@@ -231,6 +222,5 @@ public class RegistrarFactura {
         }
 
     }
-
 
 }
