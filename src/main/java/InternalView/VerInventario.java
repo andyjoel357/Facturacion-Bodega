@@ -11,7 +11,7 @@ import java.sql.Statement;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import vista.Menu;
+
 
 public class VerInventario extends javax.swing.JFrame {
 

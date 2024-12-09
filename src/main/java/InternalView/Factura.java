@@ -1,31 +1,96 @@
 package InternalView;
 
 import conexion.conexion;
+import controlador.RegistrarFactura;
+import controlador.venta;
 import java.awt.Dimension;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import modelo.DetalleVenta;
+import modelo.DetalleCabecera;
+import modelo.cliente;
 
 /**
  *
  * @author joelj
  */
 public class Factura extends javax.swing.JFrame {
-    private DefaultTableModel modeloDatosProducros;
-    ArrayList<DetalleVenta> factura = new ArrayList<>();
-    private DetalleVenta prodicto;
-    
+
+    private DefaultTableModel modeloDatosProductos;
+    ArrayList<DetalleVenta> listarproductos = new ArrayList<>();
+    private DetalleVenta producto;
+
+    //Detalle de la venta de productos
+    //BASE DE DATOS
+    private int id_producto = 0;
+    private String nombre = "";
+    private int stock = 0; //stock en la db
+    private double precio_unitario = 0.0;
+    private int porcentajeiva =0;
+
+    //DETLLE VENTA
+    private int cantidad = 0; //productos a comprar
+    private double subtotal = 0.0; // cantidad por precio
+    private double descuento =0.0;
+    private double iva = 0.0;
+    private double total = 0.0;
+
+    //Total
+    private double subtotalGeneral = 0.0;
+    private double totalGeneral = 0.0;
+    // Nª detalle
+
+    private int auxIdDetalle = 1;
+    private int idDatos = 0;
+    // constructor
+
     public Factura() {
         initComponents();
         this.setSize(new Dimension(1000, 550));
         this.setTitle("SISTEMA DE FACTURACION");
+        //CArgar productos en el COMBO BOX
+        this.iniTablaProductos();
+        //Numero NotaVenta
+        this.idDetalleVenta();
+        num_factura.setText(String.valueOf(idDatos + 1));
     }
-    
+
+    private void iniTablaProductos() {
+        modeloDatosProductos = new DefaultTableModel();
+
+        //añadir columnbas
+        modeloDatosProductos.addColumn("N");
+        modeloDatosProductos.addColumn("Nombre");
+        modeloDatosProductos.addColumn("Cantidad");
+        modeloDatosProductos.addColumn("P. Unitario");
+        modeloDatosProductos.addColumn("V. Total");
+
+        //agregar los datos del mdoelo a la tabla
+        this.visor.setModel(modeloDatosProductos);
+    }
+
+    public void listaTabla() {
+        this.modeloDatosProductos.setRowCount(listarproductos.size());
+        for (int i = 0; i < listarproductos.size(); i++) {
+            this.modeloDatosProductos.setValueAt(i + 1, i, 0);
+            this.modeloDatosProductos.setValueAt(listarproductos.get(i).getNombre(), i, 1);
+            this.modeloDatosProductos.setValueAt(listarproductos.get(i).getCantidad(), i, 2);
+            this.modeloDatosProductos.setValueAt(listarproductos.get(i).getPrecio_unitario(), i, 3);
+            this.modeloDatosProductos.setValueAt(listarproductos.get(i).getTotal(), i, 4);
+        }
+        //AÑADIR AL JTABLE
+        visor.setModel(modeloDatosProductos);
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -49,7 +114,7 @@ public class Factura extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        numero1 = new javax.swing.JLabel();
+        num_factura = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
@@ -75,14 +140,14 @@ public class Factura extends javax.swing.JFrame {
         buscar = new javax.swing.JButton();
         agregar = new javax.swing.JButton();
         jLabel23 = new javax.swing.JLabel();
-        agr_unidades = new javax.swing.JTextField();
+        unidades = new javax.swing.JTextField();
         jPanel6 = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
-        subtotal = new javax.swing.JTextField();
+        txt_subtotal = new javax.swing.JTextField();
         jLabel18 = new javax.swing.JLabel();
-        descuento = new javax.swing.JTextField();
-        total = new javax.swing.JTextField();
+        txt_total = new javax.swing.JTextField();
         jLabel19 = new javax.swing.JLabel();
+        clc_iva = new javax.swing.JTextField();
         cobrar = new javax.swing.JButton();
         cobrar1 = new javax.swing.JButton();
 
@@ -239,8 +304,8 @@ public class Factura extends javax.swing.JFrame {
                 .addGap(0, 12, Short.MAX_VALUE))
         );
 
-        numero1.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        numero1.setForeground(new java.awt.Color(0, 0, 0));
+        num_factura.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        num_factura.setForeground(new java.awt.Color(0, 0, 0));
 
         jLabel10.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(0, 0, 0));
@@ -406,6 +471,11 @@ public class Factura extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
+        visor.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                visorMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(visor);
 
         eliminar.setBackground(new java.awt.Color(0, 204, 0));
@@ -413,6 +483,11 @@ public class Factura extends javax.swing.JFrame {
         eliminar.setForeground(new java.awt.Color(255, 255, 255));
         eliminar.setText("ELIMINAR");
         eliminar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarActionPerformed(evt);
+            }
+        });
 
         jLabel21.setFont(new java.awt.Font("Roboto Black", 1, 14)); // NOI18N
         jLabel21.setForeground(new java.awt.Color(0, 0, 0));
@@ -452,7 +527,7 @@ public class Factura extends javax.swing.JFrame {
         jLabel23.setForeground(new java.awt.Color(0, 0, 0));
         jLabel23.setText("Unidades:");
 
-        agr_unidades.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        unidades.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -466,16 +541,19 @@ public class Factura extends javax.swing.JFrame {
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addGap(261, 261, 261)
+                                .addComponent(eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel5Layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
-                                .addComponent(jLabel21)
-                                .addGap(9, 9, 9)
                                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel5Layout.createSequentialGroup()
-                                        .addGap(42, 42, 42)
+                                        .addGap(145, 145, 145)
                                         .addComponent(buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(60, 60, 60)
+                                        .addGap(18, 18, 18)
                                         .addComponent(agregar))
                                     .addGroup(jPanel5Layout.createSequentialGroup()
+                                        .addComponent(jLabel21)
+                                        .addGap(9, 9, 9)
                                         .addComponent(bsc_codigo, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(jLabel22)
@@ -484,10 +562,7 @@ public class Factura extends javax.swing.JFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(jLabel23)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(agr_unidades, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addGap(261, 261, 261)
-                                .addComponent(eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(unidades, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                         .addGap(15, 15, 15)))
                 .addContainerGap(32, Short.MAX_VALUE))
         );
@@ -501,10 +576,10 @@ public class Factura extends javax.swing.JFrame {
                     .addComponent(jLabel22)
                     .addComponent(bsc_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel23)
-                    .addComponent(agr_unidades, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(unidades, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(agregar, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(agregar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -520,23 +595,24 @@ public class Factura extends javax.swing.JFrame {
         jLabel17.setForeground(new java.awt.Color(0, 0, 0));
         jLabel17.setText("Subtotal:");
 
-        subtotal.setBackground(new java.awt.Color(153, 153, 255));
-        subtotal.setForeground(new java.awt.Color(0, 0, 0));
+        txt_subtotal.setBackground(new java.awt.Color(153, 153, 255));
+        txt_subtotal.setForeground(new java.awt.Color(0, 0, 0));
 
         jLabel18.setFont(new java.awt.Font("Roboto Black", 1, 14)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(0, 0, 0));
         jLabel18.setText("Desc. %:");
 
-        descuento.setBackground(new java.awt.Color(153, 153, 255));
-        descuento.setForeground(new java.awt.Color(0, 0, 0));
-
-        total.setBackground(new java.awt.Color(153, 153, 255));
-        total.setForeground(new java.awt.Color(0, 0, 0));
+        txt_total.setBackground(new java.awt.Color(153, 153, 255));
+        txt_total.setForeground(new java.awt.Color(0, 0, 0));
 
         jLabel19.setBackground(new java.awt.Color(255, 51, 51));
         jLabel19.setFont(new java.awt.Font("Roboto Black", 1, 14)); // NOI18N
         jLabel19.setForeground(new java.awt.Color(0, 0, 0));
         jLabel19.setText("Total:");
+
+        clc_iva.setBackground(new java.awt.Color(153, 153, 255));
+        clc_iva.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        clc_iva.setForeground(new java.awt.Color(0, 0, 0));
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -545,20 +621,17 @@ public class Factura extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(17, 17, 17)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel18)
-                            .addComponent(jLabel19))
-                        .addGap(36, 36, 36)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(descuento, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(20, Short.MAX_VALUE))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel17)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(subtotal, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(27, 27, 27))))
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jLabel18)
+                        .addComponent(jLabel19))
+                    .addComponent(jLabel17))
+                .addGap(29, 29, 29)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txt_total, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(clc_iva, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(txt_subtotal, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)))
+                .addContainerGap(47, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -566,14 +639,14 @@ public class Factura extends javax.swing.JFrame {
                 .addGap(14, 14, 14)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel17)
-                    .addComponent(subtotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_subtotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel18)
-                    .addComponent(descuento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(clc_iva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_total, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel19))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -583,6 +656,11 @@ public class Factura extends javax.swing.JFrame {
         cobrar.setForeground(new java.awt.Color(255, 255, 255));
         cobrar.setText("FACTURAR");
         cobrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        cobrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cobrarActionPerformed(evt);
+            }
+        });
 
         cobrar1.setBackground(new java.awt.Color(0, 153, 153));
         cobrar1.setFont(new java.awt.Font("Roboto Black", 1, 18)); // NOI18N
@@ -604,7 +682,7 @@ public class Factura extends javax.swing.JFrame {
                         .addGap(111, 111, 111)
                         .addComponent(jLabel10)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(numero1, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(num_factura, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(16, 16, 16)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -631,7 +709,7 @@ public class Factura extends javax.swing.JFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(34, 34, 34)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(numero1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(num_factura, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel10)))
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -755,8 +833,180 @@ public class Factura extends javax.swing.JFrame {
         table.setModel(model);
     }
     private void agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarActionPerformed
-        // TODO add your handling code here:
+
+        if (!unidades.getText().isEmpty() && unidades.getText().matches("\\d+")) {
+            cantidad = Integer.parseInt(unidades.getText());
+
+            // Get product data
+            this.DatosDelProducto();
+
+            // Check stock availability
+            if (cantidad <= stock) {
+                subtotal = precio_unitario * cantidad;
+                subtotal = (double) Math.round(subtotal * 100) / 100;
+                total += subtotal; // Update total
+
+                // Create a new product entry
+                producto = new DetalleVenta(
+                        auxIdDetalle,
+                        1,
+                        id_producto,
+                        nombre,
+                        cantidad,
+                        precio_unitario,
+                        subtotal,
+                        descuento,
+                        iva,
+                        subtotal
+                );
+
+                // Add to the product list
+                listarproductos.add(producto);
+                JOptionPane.showMessageDialog(null, "Producto Agregado");
+                auxIdDetalle++;
+
+                // Update stock
+                stock -= cantidad;
+
+                // Clear input fields
+                unidades.setText("");
+                bsc_codigo.setText("");
+
+                // Recalculate totals
+                this.calcularTotal();
+                clc_iva.setText("");
+                bsc_nombre.setText("");
+
+                // Update subtotal and total fields
+                txt_subtotal.setText(String.valueOf(total));
+                double ivaCalculado = total * (iva / 100);
+                double totalConIva = total + ivaCalculado;
+                txt_total.setText(String.valueOf(totalConIva));
+
+            } else {
+                JOptionPane.showMessageDialog(null, "La cantidad supera Stock Actual: " + stock);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Llene el campo Cantidad");
+        }
+
+        // Update the table
+        this.listaTabla();
+
     }//GEN-LAST:event_agregarActionPerformed
+
+    private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
+        this.Eliminar();
+    }//GEN-LAST:event_eliminarActionPerformed
+
+    private void visorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_visorMouseClicked
+        int selectedRowIndex = visor.getSelectedRow();
+        int idArray = (int) visor.getValueAt(selectedRowIndex, 0);
+        int ca = listarproductos.get(idArray - 1).getCantidad();
+        String nombre = listarproductos.get(idArray - 1).getNombre();
+        unidades.setText(String.valueOf(ca));
+    }//GEN-LAST:event_visorMouseClicked
+
+    private void cobrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cobrarActionPerformed
+        cliente Cliente = new cliente();
+        DetalleVenta detalleVenta = new DetalleVenta();
+        DetalleCabecera detalleCabecera = new DetalleCabecera();
+        venta Venta = new venta();
+        String fechaActual = "";
+        Date date = new Date();
+        fechaActual = new SimpleDateFormat("yyyy/MM/dd").format(date);
+        if (nombre_Cliente.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Llene el campo Nombre");
+        } else if (apellido_cliente.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Llene el campo Apellido");
+        } else if (direccion_cliente.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Llene el campo Dirección");
+        } else if (CI_cliente.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Llene el campo Ruc / CI");
+        } else if (CI_cliente.getText().length() > 13) {
+            JOptionPane.showMessageDialog(null, "El campo Ruc / CI debe tener 13 dígitos");
+        } else if (!CI_cliente.getText().matches("\\d+")) {
+            JOptionPane.showMessageDialog(null, "El campo Ruc / CI solo acepta números");
+        } else if (telf_cliente.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Llene el campo Teléfono");
+        } else if (telf_cliente.getText().length() > 10) {
+            JOptionPane.showMessageDialog(null, "El campo Teléfono debe tener 10 dígitos");
+        } else if (!telf_cliente.getText().matches("\\d+")) {
+            JOptionPane.showMessageDialog(null, "El campo Teléfono solo acepta números");
+        } else if (listarproductos.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Agregue al menos un Producto");
+        } else if (txt_subtotal.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Llene el campo Subtotal");
+        } else if (!txt_subtotal.getText().matches("\\d+(\\.\\d{1,2})?")) {
+            JOptionPane.showMessageDialog(null, "El campo Subtotal debe ser un número válido");
+        } else if (clc_iva.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Llene el campo IVA");
+        } else if (!clc_iva.getText().matches("\\d+(\\.\\d{1,2})?")) {
+            JOptionPane.showMessageDialog(null, "El campo IVA debe ser un número válido");
+        } else if (txt_total.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Llene el campo Total");
+        } else if (!txt_total.getText().matches("\\d+(\\.\\d{1,2})?")) {
+            JOptionPane.showMessageDialog(null, "El campo Total debe ser un número válido");
+        } else {
+
+            // REGISTRAR cabecera
+            Cliente.setId_cliente(0);
+            Cliente.setNombre(nombre_Cliente.getText());
+            Cliente.setApellido(apellido_cliente.getText());
+            Cliente.setCorreo(correo_cliente.getText());
+            Cliente.setCi(CI_cliente.getText());
+            Cliente.setTelefono(telf_cliente.getText());
+
+            if (Venta.guardarCabezera(Cliente)) {
+                // Obtener id del dato guardado
+                this.idDetalleVenta();
+                JOptionPane.showMessageDialog(null, "Venta Registrada");
+
+                // Generar PDF
+                RegistrarFactura pdf = new RegistrarFactura();
+                pdf.Datos(idDatos);
+                pdf.generarPDF();
+
+                // GUARDAR DETALLE
+                for (DetalleVenta elemento : listarproductos) {
+                    detalleVenta.setId_factura(0);
+                    detalleVenta.setId_cabecera(0);
+                    detalleVenta.setNombre(elemento.getNombre());
+                    detalleVenta.setCantidad(elemento.getCantidad());
+                    detalleVenta.setPrecio_unitario(elemento.getPrecio_unitario());
+                    detalleVenta.setSubtotal(elemento.getSubtotal());
+                    detalleVenta.setIva(Double.parseDouble(clc_iva.getText()));
+                    detalleVenta.setTotal(Double.parseDouble(txt_total.getText()));
+
+                    if (Venta.guardarDetalle(detalleVenta)) {
+                        // RESETEAR CAMPOS
+                        nombre_Cliente.setText("");
+                        apellido_cliente.setText("");
+                        direccion_cliente.setText("");
+                        CI_cliente.setText("");
+                        telf_cliente.setText("");
+                        txt_subtotal.setText("");
+                        clc_iva.setText("");
+                        txt_total.setText("");
+
+                        // RESTAR STOCK
+                        this.RestarStock(elemento.getId_producto(), elemento.getCantidad());
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Error al guardar detalle");
+                    }
+                }
+
+                // LIMPIAR LISTA
+                listarproductos.clear();
+                listaTabla();
+
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al guardar cabezera");
+            }
+        }
+
+
+    }//GEN-LAST:event_cobrarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -795,12 +1045,12 @@ public class Factura extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField CI_cliente;
-    private javax.swing.JTextField agr_unidades;
     private javax.swing.JButton agregar;
     private javax.swing.JTextField apellido_cliente;
     private javax.swing.JTextField bsc_codigo;
     private javax.swing.JTextField bsc_nombre;
     private javax.swing.JButton buscar;
+    public static javax.swing.JTextField clc_iva;
     private javax.swing.JTextField cliente_ci;
     private javax.swing.JTextField cliente_correo;
     private javax.swing.JTextField cliente_direccion;
@@ -809,7 +1059,6 @@ public class Factura extends javax.swing.JFrame {
     private javax.swing.JButton cobrar;
     private javax.swing.JButton cobrar1;
     private javax.swing.JTextField correo_cliente;
-    private javax.swing.JTextField descuento;
     private javax.swing.JTextField direccion_cliente;
     private javax.swing.JButton eliminar;
     private javax.swing.JButton jButton4;
@@ -843,11 +1092,160 @@ public class Factura extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField nombre_Cliente;
+    private javax.swing.JLabel num_factura;
     private javax.swing.JLabel numero;
-    private javax.swing.JLabel numero1;
-    private javax.swing.JTextField subtotal;
     private javax.swing.JTextField telf_cliente;
-    private javax.swing.JTextField total;
-    private javax.swing.JTable visor;
+    private javax.swing.JTextField txt_subtotal;
+    public static javax.swing.JTextField txt_total;
+    private javax.swing.JTextField unidades;
+    public static javax.swing.JTable visor;
     // End of variables declaration//GEN-END:variables
+
+    private void DatosDelProducto() {
+        try {
+            String sql = "SELECT * FROM productos WHERE codigo_barra = '" + this.bsc_codigo.getText() + "'";
+            Connection cn = conexion.conectar();
+            Statement st = cn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+
+            if (rs.next()) { // Check if a result is returned
+                id_producto = rs.getInt("id_producto");
+                nombre = rs.getString("nombre");
+                stock = rs.getInt("stock");
+                precio_unitario = rs.getDouble("precio_unitario");
+                System.out.println("Producto encontrado: " + nombre + ", Precio Unitario: " + precio_unitario); // Debugging line
+            } else {
+                JOptionPane.showMessageDialog(null, "Producto no encontrado.");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al obtener datos del producto: " + e);
+        }
+    }
+
+    private void idDetalleVenta() {
+
+        try {
+            Connection cn = conexion.conectar();
+            String sql = "SELECT * FROM clientes ORDER BY id_cliente DESC LIMIT 1";
+            Statement st;
+            st = cn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                idDatos = rs.getInt("id_cliente");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al cargar Id" + e);
+        }
+    }
+
+    public void calcularTotal() {
+        subtotalGeneral = 0;
+        totalGeneral = 0;
+        try {
+            double ivaInput = Double.parseDouble(clc_iva.getText());
+            iva = ivaInput / 100; // Convertir porcentaje a decimal
+        } catch (NumberFormatException e) {
+            // Manejar el error si el formato no es válido
+            JOptionPane.showMessageDialog(null, "Por favor, ingrese un valor válido para el IVA.");
+            return; // Salir del método si hay un error
+        }
+        // Calcular subtotal y total para cada elemento en la lista
+        for (DetalleVenta elemento : listarproductos) {
+            // Calcular subtotal para el elemento actual
+            double subtotalElemento = elemento.getPrecio_unitario() * elemento.getCantidad();
+            elemento.setSubtotal(subtotalElemento); // Asumiendo que DetalleVenta tiene un método setSubtotal
+
+            // Calcular IVA para el elemento actual
+            double ivaCalculado = subtotalElemento * iva;
+
+            // Calcular total para el elemento actual
+            double totalElemento = subtotalElemento + ivaCalculado;
+            elemento.setTotal(totalElemento); // Asumiendo que DetalleVenta tiene un método setTotal
+
+            // Acumular en los totales generales
+            subtotalGeneral += subtotalElemento;
+            totalGeneral += totalElemento;
+        }
+
+        // Redondear los totales generales
+        subtotalGeneral = (double) Math.round(subtotalGeneral * 100) / 100;
+        totalGeneral = (double) Math.round(totalGeneral * 100) / 100;
+
+        // Actualizar la interfaz
+        txt_subtotal.setText(String.valueOf(subtotalGeneral));
+        txt_total.setText(String.valueOf(totalGeneral));
+    }
+
+    private void Eliminar() {
+        int idArray = 0;
+        int selectedRowIndex = visor.getSelectedRow();
+
+        // If a row is selected
+        if (selectedRowIndex != -1) {
+            idArray = (int) modeloDatosProductos.getValueAt(selectedRowIndex, 0);
+            int option = JOptionPane.showConfirmDialog(null, "Esta Seguro de Eliminar este producto?", "!ADVERTENCIA!", JOptionPane.YES_NO_OPTION);
+
+            switch (option) {
+                case 0://Si
+                    listarproductos.remove(idArray - 1);
+                    modeloDatosProductos.removeRow(selectedRowIndex);
+                    this.calcularTotal();
+                    //limpiar campos
+                    unidades.setText("");
+                    break;
+                case 1://No 
+                    visor.clearSelection();
+                    //limpiar campos
+                    unidades.setText("");
+                    break;
+                default:
+                    visor.clearSelection();
+                    //limpiar campos
+                    unidades.setText("");
+                    break;
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Seleccione un Item");
+        }
+
+    }
+
+    private void RestarStock(int id, int cantidad) {
+
+        int stock = 0;
+
+        try {
+            Connection cn = conexion.conectar();
+            String sql = "select id_producto, stock from productos where id_producto = '" + id + "'";
+            Statement st;
+            st = cn.createStatement();
+
+            ResultSet rs = st.executeQuery(sql);
+
+            while (rs.next()) {
+                stock = rs.getInt("stock");
+
+            }
+            cn.close();
+
+        } catch (SQLException e) {
+            System.out.println("Error al restar stock 1" + e);
+        }
+        try {
+            Connection cn = conexion.conectar();
+            PreparedStatement consulta = cn.prepareStatement("update productos set stock=? where id_producto='" + id + "'");
+            int stockNueva = stock - cantidad;
+            consulta.setInt(1, stockNueva);
+            if (consulta.executeUpdate() > 0) {
+
+            }
+            cn.close();
+        } catch (SQLException e) {
+
+            System.out.println("Error al restar stock 2" + e);
+        }
+    }
+
 }

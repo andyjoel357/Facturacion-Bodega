@@ -3,36 +3,41 @@ package modelo;
 public class DetalleVenta {
 
     private int id_factura;
-    private int id_cliente;
-    private int id_inventario;
-    private String producto;
+    private int id_cabecera;
+    private int id_producto;
+    
+    private String nombre;
     private int cantidad;
     private double precio_unitario;
-    private double sub_total;
+    private double subtotal;
+    private double descuento;
+    private double iva;
     private double total;
-    private String fecha;
 
     public DetalleVenta(){
         this.id_factura =0;
-        this.id_cliente =0;
-        this.id_inventario=0;
-        this.producto="";
+        this.id_cabecera =0;
+        this.id_producto=0;
+        this.nombre="";
         this.cantidad=0;
         this.precio_unitario=0.0;
-        this.sub_total=0.0;
+        this.subtotal=0.0;
+        this.descuento= 0.0;
+        this.iva=0.0;
         this.total=0.0;
-        this.fecha = "";
     }
-    public DetalleVenta(int id_factura, int id_cliente, int id_inventario, String producto, int cantidad, double precio_unitario, double sub_total, double total, String fecha) {
+
+    public DetalleVenta(int id_factura, int id_cabecera, int id_producto, String nombre, int cantidad, double precio_unitario, double subtotal, double descuento, double iva, double total) {
         this.id_factura = id_factura;
-        this.id_cliente = id_cliente;
-        this.id_inventario = id_inventario;
-        this.producto = producto;
+        this.id_cabecera = id_cabecera;
+        this.id_producto = id_producto;
+        this.nombre = nombre;
         this.cantidad = cantidad;
         this.precio_unitario = precio_unitario;
-        this.sub_total = sub_total;
+        this.subtotal = subtotal;
+        this.descuento = descuento;
+        this.iva = iva;
         this.total = total;
-        this.fecha = fecha;
     }
 
     public int getId_factura() {
@@ -43,28 +48,28 @@ public class DetalleVenta {
         this.id_factura = id_factura;
     }
 
-    public int getId_cliente() {
-        return id_cliente;
+    public int getId_cabecera() {
+        return id_cabecera;
     }
 
-    public void setId_cliente(int id_cliente) {
-        this.id_cliente = id_cliente;
+    public void setId_cabecera(int id_cabecera) {
+        this.id_cabecera = id_cabecera;
     }
 
-    public int getId_inventario() {
-        return id_inventario;
+    public int getId_producto() {
+        return id_producto;
     }
 
-    public void setId_inventario(int id_inventario) {
-        this.id_inventario = id_inventario;
+    public void setId_producto(int id_producto) {
+        this.id_producto = id_producto;
     }
 
-    public String getProducto() {
-        return producto;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setProducto(String producto) {
-        this.producto = producto;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public int getCantidad() {
@@ -83,12 +88,28 @@ public class DetalleVenta {
         this.precio_unitario = precio_unitario;
     }
 
-    public double getSub_total() {
-        return sub_total;
+    public double getSubtotal() {
+        return subtotal;
     }
 
-    public void setSub_total(double sub_total) {
-        this.sub_total = sub_total;
+    public void setSubtotal(double subtotal) {
+        this.subtotal = subtotal;
+    }
+
+    public double getDescuento() {
+        return descuento;
+    }
+
+    public void setDescuento(double descuento) {
+        this.descuento = descuento;
+    }
+
+    public double getIva() {
+        return iva;
+    }
+
+    public void setIva(double iva) {
+        this.iva = iva;
     }
 
     public double getTotal() {
@@ -99,13 +120,8 @@ public class DetalleVenta {
         this.total = total;
     }
 
-    public String getFecha() {
-        return fecha;
+    @Override
+    public String toString() {
+        return "DetalleVenta{" + "id_factura=" + id_factura + ", id_cabecera=" + id_cabecera + ", id_producto=" + id_producto + ", nombre=" + nombre + ", cantidad=" + cantidad + ", precio_unitario=" + precio_unitario + ", subtotal=" + subtotal + ", descuento=" + descuento + ", iva=" + iva + ", total=" + total + '}';
     }
-
-    public void setFecha(String fecha) {
-        this.fecha = fecha;
-    }
-    
-    
 }
