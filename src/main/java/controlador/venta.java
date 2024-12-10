@@ -55,8 +55,8 @@ public class venta {
         try {
             PreparedStatement consulta = cn.prepareStatement("insert factura values(?,?,?,?,?,?,?)");
             consulta.setInt(1, 0);
-            consulta.setInt(2, idClienteRegistrado);
-            consulta.setInt(3, objeto.getId_producto());
+            consulta.setInt(2, objeto.getId_producto());
+            consulta.setInt(3, objeto.getCantidad());
             consulta.setDouble(4, objeto.getPrecio_unitario());
             consulta.setDouble(5, objeto.getSubtotal());
             consulta.setDouble(6, objeto.getIva());

@@ -913,7 +913,7 @@ public class Factura extends javax.swing.JFrame {
         Date date = new Date();
         fechaActual = new SimpleDateFormat("yyyy/MM/dd").format(date);
 
-        // Validaciones de campos
+         // Validaciones de campos
         if (nombre_Cliente.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Llene el campo Nombre");
         } else if (apellido_cliente.getText().isEmpty()) {
@@ -956,44 +956,20 @@ public class Factura extends javax.swing.JFrame {
                 // Obtener id del dato guardado
                 this.idDetalleVenta();
                 JOptionPane.showMessageDialog(null, "Venta Registrada");
+                calcularTotal();
                 // Generar PDF
                 RegistrarFactura pdf = new RegistrarFactura();
                 pdf.Datos(idDatos);
-
-                // Calculate total with VAT
-                double iva = 0;
-                try {
-                    double ivaInput = Double.parseDouble(clc_iva.getText());
-                    iva = ivaInput / 100; // Convertir porcentaje a decimal
-                } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(null, "Por favor, ingrese un valor válido para el IVA.");
-                    return; // Salir del método si hay un error
-                }
-
-                // Calcular el total con IVA
-                double subtotalGeneral = Double.parseDouble(txt_subtotal.getText());
-                double ivaCalculado = subtotalGeneral * iva;
-                double totalConIva = subtotalGeneral + ivaCalculado;
-
-                // Asignar el total calculado a `txt_total`
-                txt_total.setText(String.valueOf(totalConIva));
-
+                pdf.generarPDF();
 
                 // GUARDAR DETALLE
-                for (DetalleVenta elemento : listarproductos) {
+                 for (DetalleVenta elemento : listarproductos) {
                     detalleVenta.setId_factura(idDatos);
                     detalleVenta.setId_producto(elemento.getId_producto());
                     detalleVenta.setNombre(elemento.getNombre());
                     detalleVenta.setCantidad(elemento.getCantidad());
                     detalleVenta.setPrecio_unitario(elemento.getPrecio_unitario());
                     detalleVenta.setSubtotal(elemento.getSubtotal());
-
-                    // Calcular IVA y total para el elemento actual
-                    double ivaElemento = elemento.getSubtotal() * iva;
-                    double totalElemento = elemento.getSubtotal() + ivaElemento;
-
-                    detalleVenta.setIva(ivaElemento);
-                    detalleVenta.setTotal(totalElemento);
 
                     if (Venta.guardarDetalle(detalleVenta)) {
                         // RESETEAR CAMPOS
@@ -1022,6 +998,7 @@ public class Factura extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Error al guardar cabecera");
             }
         }
+
     }//GEN-LAST:event_cobrarActionPerformed
 
     /**
@@ -1111,7 +1088,7 @@ public class Factura extends javax.swing.JFrame {
     private javax.swing.JLabel num_factura;
     private javax.swing.JLabel numero;
     private javax.swing.JTextField telf_cliente;
-    private javax.swing.JTextField txt_subtotal;
+    public static javax.swing.JTextField txt_subtotal;
     public static javax.swing.JTextField txt_total;
     private javax.swing.JTextField unidades;
     public static javax.swing.JTable visor;
@@ -1157,24 +1134,47 @@ public class Factura extends javax.swing.JFrame {
     }
 
     public void calcularTotal() {
-        subtotalGeneral = 0;
-        try {
-            // Solo calcular el subtotal
-            for (DetalleVenta elemento : listarproductos) {
-                double subtotalElemento = elemento.getPrecio_unitario() * elemento.getCantidad();
-                elemento.setSubtotal(subtotalElemento);
-                subtotalGeneral += subtotalElemento;
-            }
+    subtotalGeneral = 0;
+    double ivaPorcentaje = 0; // Inicializar el porcentaje de IVA
+    double ivaTotal = 0;
 
-            // Redondear el subtotal
-            subtotalGeneral = (double) Math.round(subtotalGeneral * 100) / 100;
-
-            // Actualizar la interfaz
-            txt_subtotal.setText(String.valueOf(subtotalGeneral));
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error al calcular el total.");
+    try {
+        // Obtener el porcentaje de IVA desde el campo clc_iva
+        String ivaInput = clc_iva.getText().trim();
+        if (!ivaInput.isEmpty() && ivaInput.matches("\\d+")) {
+            int ivaEntero = Integer.parseInt(ivaInput);
+            ivaPorcentaje = ivaEntero / 100.0; // Convertir a decimal
+        } else {
+            JOptionPane.showMessageDialog(null, "Ingrese un porcentaje de IVA válido.");
+            return; // Salir del método si el IVA no es válido
         }
+
+        // Solo calcular el subtotal
+        for (DetalleVenta elemento : listarproductos) {
+            double subtotalElemento = elemento.getPrecio_unitario() * elemento.getCantidad();
+            elemento.setSubtotal(subtotalElemento);
+            subtotalGeneral += subtotalElemento;
+        }
+
+        // Redondear el subtotal
+        subtotalGeneral = (double) Math.round(subtotalGeneral * 100) / 100;
+
+        // Calcular el IVA
+        ivaTotal = subtotalGeneral * ivaPorcentaje;
+        ivaTotal = (double) Math.round(ivaTotal * 100) / 100;
+
+        // Calcular el total
+        double totalGeneral = subtotalGeneral + ivaTotal;
+        totalGeneral = (double) Math.round(totalGeneral * 100) / 100;
+
+        // Actualizar la interfaz
+        txt_subtotal.setText(String.valueOf(subtotalGeneral));
+        txt_total.setText(String.valueOf(totalGeneral)); // Actualizar el total con IVA
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Error al calcular el total.");
     }
+}
 
     private void Eliminar() {
         int idArray = 0;

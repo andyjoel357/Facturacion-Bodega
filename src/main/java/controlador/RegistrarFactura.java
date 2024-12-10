@@ -193,6 +193,8 @@ public class RegistrarFactura {
             Paragraph info = new Paragraph();
 
             info.add(Chunk.NEWLINE);
+            info.add("Subtotal: " +Factura.txt_subtotal.getText());
+            info.add(Chunk.NEWLINE);
             info.add("Iva: " + Factura.clc_iva.getText() + "%\n\n");
             info.add("Total a pagar: " + Factura.txt_total.getText());
             info.setAlignment(Element.ALIGN_RIGHT);
